@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+	font-family: "GoldmanBold";
+	src: local("GoldmanBold"), url("./fonts/minecraft.ttf") format("truetype");
+	font-weight: bold;
+}

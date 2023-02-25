@@ -1,0 +1,45 @@
+.month {
+	@apply w-full flex justify-center items-center flex-col;
+}
+
+.month > h1 {
+	@apply text-3xl mb-5 font-semibold;
+}
+
+.days {
+	@apply grid grid-cols-6 gap-4;
+}
+
+.day {
+	@apply w-48 h-48 shadow-lg border rounded-md overflow-hidden
+	flex flex-col;
+}
+
+.day > h1 {
+	@apply bg-blue-500 text-white text-center font-bold py-2;
+}
+
+.day.active > h1 {
+	@apply bg-emerald-500;
+}
+
+.day .events {
+	@apply flex items-center flex-grow flex-col gap-2 p-1;
+}
+
+.events:not(.empty) h2 {
+	@apply w-full bg-slate-500 rounded-sm px-1 font-medium text-white;
+}
+
+.day .events.empty {
+	@apply justify-center;
+}
+
+.day .events.empty h2 {
+	@apply text-xl font-bold text-gray-500;
+}
+
+.Nav {
+	@apply w-full bg-rose-500 p-4 text-center text-4xl font-bold text-white;
+	font-family: minecraft;
+}
