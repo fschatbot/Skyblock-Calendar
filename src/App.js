@@ -42,7 +42,7 @@ function App() {
 			!loading &&
 			Array(constants.MONTHS_IN_YEAR)
 				.fill(0)
-				.map((_, i) => <Month month={i} key={i} active={{ month, day, currDay }} />),
+				.map((_, i) => <Month month={i} year={year} key={i} active={{ month, day, currDay }} />),
 		[month, day, loading]
 	);
 
@@ -65,7 +65,7 @@ function App() {
 			<h2>
 				Current Events:
 				{calcEvents(skyDate).map((event) => (
-					<div className="chip">{event}</div>
+					<div className="chip">{event.name}</div>
 				))}
 			</h2>
 			{months}
@@ -73,7 +73,7 @@ function App() {
 	);
 }
 
-function Month({ month, active }) {
+function Month({ month, year, active }) {
 	const monthName = constants.MONTHS[month + 1].replace("_", " ").title();
 
 	return (
@@ -84,15 +84,15 @@ function Month({ month, active }) {
 				{Array(constants.DAYS_IN_MONTH)
 					.fill(0)
 					.map((_, i) => (
-						<Day day={i} month={month} key={`${month}-${i}`} active={active} />
+						<Day day={i} month={month} year={year} key={`${month}-${i}`} active={active} />
 					))}
 			</div>
 		</div>
 	);
 }
 
-function Day({ day, month, active }) {
-	const events = calcEvents({ day, month });
+function Day({ day, month, year, active }) {
+	const events = calcEvents({ day, month, year });
 	const empty = events.length === 0 ? " empty" : "";
 	const isActive = active.day - 1 === day && active.month - 1 === month;
 	const [width, setWidth] = useState(0);

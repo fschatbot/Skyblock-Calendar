@@ -1,28 +1,28 @@
-let constants = {};
+let constants = {
+	// Not using the API as its not updated
+	events: [
+		{ key: "spookyFestival", name: "Spooky Festival", when: [{ start: { month: 8, day: 29 }, end: { month: 8, day: 31 } }] },
+		{
+			key: "zoo",
+			name: "Travelling Zoo",
+			when: [
+				{ start: { month: 4, day: 1 }, end: { month: 4, day: 3 } },
+				{ start: { month: 10, day: 1 }, end: { month: 10, day: 3 } },
+			],
+		},
+		{ key: "jerryWorkshop", name: "Jerry's Workshop", when: [{ start: { month: 12, day: 1 }, end: { month: 1, day: 1 } }] },
+		{ key: "winter", name: "Season of Jerry", when: [{ start: { month: 12, day: 24 }, end: { month: 12, day: 26 } }] },
+		{ key: "newYear", name: "New Year Celebration", when: [{ start: { month: 12, day: 29 }, end: { month: 12, day: 31 } }] },
+		{ key: "interest", name: "Bank Interest", when: [{ start: { day: 1 }, end: { day: 1 } }] },
+		{ key: "electionOver", name: "Election Over", when: [{ start: { month: 3, day: 27 }, end: { month: 3, day: 27 } }] },
+	],
+};
 
 const calendarFetch = fetch("https://hypixel-api.inventivetalent.org/api/skyblock/calendar")
 	.then((res) => res.json())
 	.then((data) => {
-		constants = { ...data.real, ...data.ingame, MONTHS: data.months };
-		// Formatting the events a little
-		data.events.yearly.forEach((event) => {
-			event.when.map((when) => {
-				when.start.month = data.reverseMonths[when.start.month];
-				when.end.month = data.reverseMonths[when.end.month];
-
-				return when;
-			});
-		});
-		data.events.monthly.forEach((event) => {
-			event.when.map((when) => {
-				when.start = { day: when.day };
-				when.end = { day: when.day };
-				return when;
-			});
-		});
-		constants.events = [...data.events.yearly, ...data.events.monthly];
-
-		console.log(constants);
+		constants = { ...constants, ...data.real, ...data.ingame, MONTHS: data.months };
+		console.log(JSON.stringify(constants.events));
 	});
 
 const year_0 = new Date("Jun 11 2019 17:55:00 GMT").getTime() || 1.5602757e12;
@@ -51,10 +51,11 @@ function calcDay() {
 	return { year: year + 1, month: month + 1, day: day + 1, monthName: constants.MONTHS[month + 1], hour, minute, second };
 }
 
-function calcEvents({ day, month }) {
+function calcEvents({ day, month, year }) {
 	day += 1;
 	month += 1;
-	let events = [];
+	let DayEvents = [];
+
 	constants.events.forEach((event) => {
 		event.when.forEach((when) => {
 			let startDay = when.start.day || day;
@@ -62,12 +63,16 @@ function calcEvents({ day, month }) {
 			let startMonth = when.start.month || month;
 			let endMonth = when.end.month || month;
 			if (startDay <= day && day <= endDay && startMonth <= month && month <= endMonth) {
-				events.push(event);
+				DayEvents.push(event);
 			}
 		});
 	});
 
-	return events;
+	// The dark auction appears every 3 days
+	const days = constants.DAYS_IN_YEAR * (year - 1) + constants.DAYS_IN_MONTH * (month - 1) + day;
+	if (days % 3 === 0) DayEvents.push({ name: "Dark Auction", key: "dark_auction" });
+
+	return DayEvents;
 }
 
 String.prototype.title = function () {
