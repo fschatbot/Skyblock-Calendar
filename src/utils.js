@@ -16,13 +16,14 @@ let constants = {
 		{ key: "interest", name: "Bank Interest", when: [{ start: { day: 1 }, end: { day: 1 } }] },
 		{ key: "electionOver", name: "Election Over", when: [{ start: { month: 3, day: 27 }, end: { month: 3, day: 27 } }] },
 	],
+	DwarvenKing: ["Brammor", "Brammor", "Brammor", "Emkam", "Redros", "Erren", "Thormyr", "Emmor", "Grandan"],
 };
 
 const calendarFetch = fetch("https://hypixel-api.inventivetalent.org/api/skyblock/calendar")
 	.then((res) => res.json())
 	.then((data) => {
 		constants = { ...constants, ...data.real, ...data.ingame, MONTHS: data.months };
-		console.log(JSON.stringify(constants.events));
+		console.log(constants);
 	});
 
 const year_0 = new Date("Jun 11 2019 17:55:00 GMT").getTime() || 1.5602757e12;
@@ -71,6 +72,10 @@ function calcEvents({ day, month, year }) {
 	// The dark auction appears every 3 days
 	const days = constants.DAYS_IN_YEAR * (year - 1) + constants.DAYS_IN_MONTH * (month - 1) + day;
 	if (days % 3 === 0) DayEvents.push({ name: "Dark Auction", key: "dark_auction" });
+
+	// Calculating the drawven kings (First King was King Erren)
+	const king = constants.DwarvenKing[(5 + days) % constants.DwarvenKing.length];
+	DayEvents.push({ name: `King ${king}`, key: "dwarven_king" });
 
 	return DayEvents;
 }
