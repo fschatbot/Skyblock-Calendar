@@ -76,5 +76,14 @@ String.prototype.title = function () {
 		.join(" ");
 };
 
+Number.prototype.rank = function () {
+	const ranks = {
+		1: "st",
+		2: "nd",
+		3: "rd",
+	};
+	return ranks[this] || "th";
+};
+
 export default calcDay;
 export { constants, calcEvents, calcDay, calendarFetch };
