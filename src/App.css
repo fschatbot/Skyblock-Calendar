@@ -11,7 +11,7 @@
 }
 
 .day {
-	@apply w-48 h-48 shadow-lg rounded-md overflow-hidden backdrop-blur-sm bg-white/20
+	@apply w-52 h-52 shadow-lg rounded-md overflow-hidden backdrop-blur-sm bg-white/20
 	flex flex-col relative;
 
 	@apply before:content-[''] before:absolute before:h-full before:w-[var(--width)] before:bg-black/20 before:transition-[width];
@@ -30,7 +30,12 @@
 }
 
 .events:not(.empty) h2 {
-	@apply w-full bg-slate-500 rounded-sm px-1 font-medium text-white;
+	@apply w-full bg-slate-500 rounded-sm px-1 font-medium text-white
+	flex flex-row gap-1;
+}
+
+.events:not(.empty) img {
+	@apply h-6 w-6;
 }
 
 .day .events.empty {

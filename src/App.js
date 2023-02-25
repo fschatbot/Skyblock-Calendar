@@ -117,7 +117,13 @@ function Day({ day, month, year, active }) {
 			</h1>
 			<div className={"events" + empty}>
 				{events.length === 0 && <h2>No Events</h2>}
-				{events.length !== 0 && events.map((event) => <h2 key={event.key}>{event.name}</h2>)}
+				{events.length !== 0 &&
+					events.map((event) => (
+						<h2 key={event.key}>
+							{event.icon && <img src={event.icon} alt={event.name} />}
+							{event.name}
+						</h2>
+					))}
 			</div>
 		</div>
 	);
