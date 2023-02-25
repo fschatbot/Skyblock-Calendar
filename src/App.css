@@ -42,13 +42,18 @@
 }
 
 .Nav {
-	@apply w-full p-4 fixed z-50
+	@apply w-full fixed z-50 h-[72px] top-0 py-4
 	bg-rose-500/80 backdrop-blur-sm 
 	text-4xl font-bold text-white text-center;
 	font-family: minecraft;
 }
 
+.jumpDay {
+	@apply fixed bottom-6 right-6 p-3 rounded-xl cursor-pointer text-blue-600
+	bg-white/60 backdrop-blur-3xl;
+}
+
 .mainContainer {
 	background: var(--bg);
-	@apply bg-cover bg-no-repeat bg-fixed;
+	@apply bg-cover bg-no-repeat bg-fixed pt-20;
 }

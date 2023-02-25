@@ -18,9 +18,13 @@ function App() {
 	const [loading, setLoading] = useState(true);
 	const [skyDate, setSkyDate] = useState({});
 	const [randomImage, setRandomImage] = useState(Math.floor(Math.random() * images.length));
+	const currDay = useRef();
+
 	// Simply sets the skyDate to calcDay() every 100ms
 	useEffect(() => {
 		if (loading) return;
+		currDay.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+
 		const interval = setInterval(() => {
 			setSkyDate(calcDay());
 		}, 100);
@@ -38,7 +42,7 @@ function App() {
 			!loading &&
 			Array(constants.MONTHS_IN_YEAR)
 				.fill(0)
-				.map((_, i) => <Month month={i} key={i} active={{ month, day }} />),
+				.map((_, i) => <Month month={i} key={i} active={{ month, day, currDay }} />),
 		[month, day, loading]
 	);
 
@@ -48,6 +52,15 @@ function App() {
 
 	return (
 		<div style={{ "--bg": `url(${images[randomImage]})` }} className="mainContainer">
+			<div className="jumpDay" onClick={() => currDay.current?.scrollIntoView({ behavior: "smooth", block: "center" })}>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+					<path
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+					/>
+				</svg>
+			</div>
 			<h1 className="Nav">Time: {TimeString}</h1>
 			<h2>
 				Current Events:
@@ -82,13 +95,12 @@ function Day({ day, month, active }) {
 	const events = calcEvents({ day, month });
 	const empty = events.length === 0 ? " empty" : "";
 	const isActive = active.day - 1 === day && active.month - 1 === month;
-	const dayRef = useRef();
 	const [width, setWidth] = useState(0);
+	const props = isActive ? { ref: active.currDay } : {};
 
 	useEffect(() => {
 		if (isActive) {
-			dayRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-
+			active.currDay.current?.scrollIntoView({ behavior: "smooth", block: "center" });
 			let interval = setInterval(() => {
 				const { hour, minute } = calcDay();
 				setWidth((hour * 60 + minute) / (60 * 24));
@@ -98,7 +110,7 @@ function Day({ day, month, active }) {
 	}, [isActive]);
 
 	return (
-		<div className={"day" + (isActive ? " active" : "")} ref={dayRef} style={{ "--width": `${width * 100}%` }}>
+		<div className={"day" + (isActive ? " active" : "")} style={{ "--width": `${width * 100}%` }} {...props}>
 			<h1>
 				{day + 1}
 				{(day + 1).rank()}
