@@ -82,7 +82,7 @@ function calcDay() {
 	const [minute, remainer5] = [Math.floor(remainer4 / minuteDivider), remainer4 % minuteDivider];
 
 	const secondDivider = 1000;
-	const [second, remainer6] = [Math.floor(remainer5 / secondDivider), remainer5 % secondDivider];
+	const second = Math.floor(remainer5 / secondDivider);
 
 	return { year: year + 1, month: month + 1, day: day + 1, monthName: constants.MONTHS[month + 1], hour, minute, second };
 }
@@ -120,6 +120,7 @@ function calcEvents({ day, month, year }) {
 	return DayEvents;
 }
 
+/*eslint no-extend-native: ["error", { "exceptions": ["String", "Number"] }]*/
 String.prototype.title = function () {
 	return this.split(" ")
 		.map((word) => word[0].toUpperCase() + word.slice(1))

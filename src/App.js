@@ -17,7 +17,7 @@ const images = [image1, image2, image3, image4, image5, image6, image7, image8];
 function App() {
 	const [loading, setLoading] = useState(true);
 	const [skyDate, setSkyDate] = useState({});
-	const [randomImage, setRandomImage] = useState(Math.floor(Math.random() * images.length));
+	const [randomImage] = useState(Math.floor(Math.random() * images.length));
 	const currDay = useRef();
 
 	// Simply sets the skyDate to calcDay() every 100ms
@@ -43,7 +43,7 @@ function App() {
 			Array(constants.MONTHS_IN_YEAR)
 				.fill(0)
 				.map((_, i) => <Month month={i} year={year} key={i} active={{ month, day, currDay }} />),
-		[month, day, loading]
+		[month, day, year, loading]
 	);
 
 	calendarFetch.then(() => setLoading(false));
@@ -107,7 +107,7 @@ function Day({ day, month, year, active }) {
 			}, 100);
 			return () => clearInterval(interval);
 		}
-	}, [isActive]);
+	}, [isActive, active.currDay]);
 
 	return (
 		<div className={"day" + (isActive ? " active" : "")} style={{ "--width": `${width * 100}%` }} {...props}>
