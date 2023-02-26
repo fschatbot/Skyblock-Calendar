@@ -113,6 +113,9 @@ function calcEvents({ day, month, year }) {
 			icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/d/d2/Dark_Auction_House_Sprite.png",
 		});
 
+	// Jacob's event
+	if (days % 3 === 1) DayEvents.push({ name: "Jacob's Event", key: "jacob", icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/5/5c/Enchanted_Wheat.png" });
+
 	// Calculating the drawven kings (First King was King Erren)
 	const king = (5 + days) % Object.keys(constants.DwarvenKing).length;
 	DayEvents.push({ name: `King ${Object.keys(constants.DwarvenKing)[king]}`, key: "dwarven_king", icon: "https://mc-heads.net/head/" + Object.values(constants.DwarvenKing)[king] });
