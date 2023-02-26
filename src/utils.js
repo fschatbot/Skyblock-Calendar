@@ -43,6 +43,23 @@ let constants = {
 			when: [{ start: { month: 3, day: 27 }, end: { month: 3, day: 27 } }],
 			icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/6/65/Jukebox.png",
 		},
+		{
+			key: "fishing_festival",
+			name: "Fishing Festival",
+			when: [{ start: { day: 1 }, end: { day: 3 } }],
+			mayor: "Marina",
+			icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/c/c7/Fishing_Rod.png" || "https://assets.mcasset.cloud/1.19.3/assets/minecraft/textures/item/fishing_rod.png",
+		},
+		{
+			key: "mining_fiesta",
+			name: "Mining Fiesta",
+			when: [
+				{ start: { month: 4, day: 1 }, end: { month: 4, day: 16 } },
+				{ start: { month: 7, day: 1 }, end: { month: 7, day: 16 } },
+			],
+			mayor: "Cole",
+			icon: "https://assets.mcasset.cloud/1.19.3/assets/minecraft/textures/item/iron_pickaxe.png",
+		},
 	],
 	DwarvenKing: {
 		Brammor: "c83c21cb1b514d4d4e30e9eaf3bc27c8ca8ded19c0624c01f77dfd97f072c0d9",
@@ -98,6 +115,11 @@ function calcEvents({ day, month, year }) {
 	let DayEvents = [];
 
 	constants.events.forEach((event) => {
+		if (event.mayor) {
+			const winner = constants.mayor.candidates.filter((a) => a.name === constants.mayor.winner)[0];
+			if (event.mayor !== winner.name) return;
+			if (winner.perks.every((perk) => perk !== event.name)) return;
+		}
 		event.when.forEach((when) => {
 			let startDay = when.start.day || day;
 			let endDay = when.end.day || day;
@@ -133,24 +155,13 @@ function calcEvents({ day, month, year }) {
 		});
 	}
 
-	// Fishing Event
-	if (day === 0) console.log(1);
-	if (constants.mayor.winner === "Marina" && 1 <= day && day <= 3) {
-		DayEvents.push({
-			name: "Fishing Event",
-			key: "fishing_event",
-			icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/c/c7/Fishing_Rod.png" || "https://assets.mcasset.cloud/1.19.3/assets/minecraft/textures/item/fishing_rod.png",
-		});
-	}
-
 	// Just for testing purposes
-	/*for (let i = 0; i < 2; i++) {
-		DayEvents.push({
-			name: "Dummy Event",
-			key: "dummy",
-			icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/0/01/Island_NPC.png",
-		});
-	}*/
+	// const DummyEvent = {
+	// 	name: "Dummy Event",
+	// 	key: "dummy",
+	// 	icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/0/01/Island_NPC.png",
+	// };
+	// for (let i = 0; i < 2; i++) DayEvents.push(DummyEvent)
 
 	return DayEvents;
 }
