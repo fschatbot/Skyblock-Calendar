@@ -120,6 +120,14 @@ function calcEvents({ day, month, year }) {
 	const king = (5 + days) % Object.keys(constants.DwarvenKing).length;
 	DayEvents.push({ name: `King ${Object.keys(constants.DwarvenKing)[king]}`, key: "dwarven_king", icon: "https://mc-heads.net/head/" + Object.values(constants.DwarvenKing)[king] });
 
+	// Calculating if special mayor event is happening
+	if ((year % 8 === 0 && month >= 6) || (year % 8 === 1 && month <= 3)) {
+		DayEvents.push({
+			name: "Special Mayor",
+			key: "special_mayor",
+		});
+	}
+
 	return DayEvents;
 }
 

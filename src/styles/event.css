@@ -1,0 +1,24 @@
+.day .events {
+	@apply flex items-center flex-grow flex-col gap-2 p-1;
+}
+
+.events:not(.empty) h2 {
+	@apply w-full bg-slate-500 rounded-sm px-1 font-medium text-white
+	flex flex-row gap-1;
+}
+.special_mayor,
+.electionOver {
+	@apply !bg-purple-600;
+}
+
+.events:not(.empty) img {
+	@apply h-5 w-5 m-1;
+}
+
+.day .events.empty {
+	@apply justify-center;
+}
+
+.day .events.empty h2 {
+	@apply text-xl font-bold text-white;
+}

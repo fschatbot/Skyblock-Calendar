@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from "react";
-import "./App.css";
+import "./styles/App.css";
+import "./styles/calendar.css";
+import "./styles/event.css";
 import { constants, calcDay, calcEvents, calendarFetch } from "./utils";
 
 // Importing all the background images
@@ -113,7 +115,7 @@ function Day({ day, month, year, active }) {
 				{events.length === 0 && <h2>No Events</h2>}
 				{events.length !== 0 &&
 					events.map((event) => (
-						<h2 key={event.key}>
+						<h2 key={event.key} className={event.key}>
 							{event.icon && <img src={event.icon} alt={event.name} />}
 							{event.name}
 						</h2>

@@ -1,0 +1,26 @@
+.month {
+	@apply w-full flex justify-center items-center flex-col;
+}
+
+.month > h1 {
+	@apply text-3xl mb-5 font-semibold text-white;
+}
+
+.days {
+	@apply grid grid-cols-2 md:grid-cols-7 gap-4;
+}
+
+.day {
+	@apply w-52 h-52 shadow-lg rounded-md overflow-hidden backdrop-blur-sm bg-white/20
+	flex flex-col relative;
+
+	@apply before:content-[''] before:absolute before:h-full before:w-[var(--width)] before:bg-black/20 before:transition-[width];
+}
+
+.day > h1 {
+	@apply bg-blue-500 text-white text-center font-bold py-2;
+}
+
+.day.active > h1 {
+	@apply bg-emerald-500;
+}
