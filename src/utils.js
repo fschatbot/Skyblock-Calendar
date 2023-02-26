@@ -60,8 +60,13 @@ const calendarFetch = fetch("https://hypixel-api.inventivetalent.org/api/skybloc
 	.then((res) => res.json())
 	.then((data) => {
 		constants = { ...constants, ...data.real, ...data.ingame, MONTHS: data.months };
-		console.log(constants);
-	});
+	})
+	.then(() => fetch("https://skyblock-api.matdoes.dev/election"))
+	.then((res) => res.json())
+	.then((data) => {
+		constants.mayor = data.previous;
+	})
+	.finally(() => console.log((window.constants = constants)));
 
 function calcDay() {
 	const date = Date.now() - year_0;
@@ -110,7 +115,7 @@ function calcEvents({ day, month, year }) {
 		DayEvents.push({
 			name: "Dark Auction",
 			key: "dark_auction",
-			icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/d/d2/Dark_Auction_House_Sprite.png",
+			icon: "https://mc-heads.net/head/7ab83858ebc8ee85c3e54ab13aabfcc1ef2ad446d6a900e471c3f33b78906a5b",
 		});
 
 	// Jacob's event

@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import "./styles/App.css";
 import "./styles/calendar.css";
 import "./styles/event.css";
+import "react-tooltip/dist/react-tooltip.css";
+import { Tooltip } from "react-tooltip";
 import { constants, calcDay, calcEvents, calendarFetch } from "./utils";
 
 // Importing all the background images
@@ -55,6 +57,7 @@ function App() {
 	return (
 		<div style={{ "--bg": `url(${images[randomImage]})` }} className="mainContainer">
 			<JumpDay activeDayRef={currDay} />
+			<DisplayMayor />
 			<h1 className="Nav">Time: {TimeString}</h1>
 			<div className="currEvents">
 				<h2>Current Events:</h2>
@@ -136,6 +139,45 @@ function JumpDay({ activeDayRef }) {
 				/>
 			</svg>
 		</div>
+	);
+}
+
+function DisplayMayor() {
+	const currMayor = constants.mayor.candidates.filter((a) => a.name === constants.mayor.winner)[0];
+	const MayorSkins = {
+		Foxy: "3485a717fa0f51d7fadc66a5d5e9853905bef914e3b2848a2f128e63d2db87",
+		Marina: "807fc9bee8d3344e840e4031a37249a4c3c87fc80cf16432cc5c2153d1f9c53d",
+		Paul: "1b59c43d8dbccfd7ec6e6394b6304b70d4ed315add0494ee77c733f41818c73a",
+		Derpy: "f450d12692886c47b078a38f4d492acfe61216e2d0237ab82433409b3046b464",
+		Jerry: "45f729736996a38e186fe9fe7f5a04b387ed03f3871ecc82fa78d8a2bdd31109",
+		Scorpius: "8f26fa0c47536e78e337257d898af8b1ebc87c0894503375234035ff2c7ef8f0",
+		Cole: "16422de08848952d1cbead66bbbad6f07191bdcc952f3d1036aeb0c22938f39b",
+		Diana: "83cc1cf672a4b2540be346ead79ac2d9ed19d95b6075bf95be0b6d0da61377be",
+		Diaz: "9cf4737cd444b590545734a6408cbe23c182f4283f167a3e3c09532ccbef17f9",
+		Finnegan: "",
+		Aatrox: "c1bdf505bb8c0f1f3365a03032de1931663ff71c57e022558de312b8f1b5c445",
+	};
+	// console.log(currMayor);
+
+	return (
+		<>
+			{/* <Tooltip anchorSelect=".mayorDisplay" place="top">
+				{currMayor.perks.map((perk) => perk.description)}
+			</Tooltip> */}
+			<div className="mayorDisplay">
+				<img src={`https://mc-heads.net/avatar/${MayorSkins[currMayor.name]}`} alt={currMayor.name} />
+			</div>
+			<Tooltip anchorSelect=".mayorDisplay" place="top">
+				{currMayor.perks.map((perk) => {
+					return (
+						<>
+							<h1>{perk.name}</h1>
+							<span>{perk.description.replace(/§./g, "")}</span>
+						</>
+					);
+				})}
+			</Tooltip>
+		</>
 	);
 }
 
