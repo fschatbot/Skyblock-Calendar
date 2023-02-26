@@ -7,7 +7,7 @@
 }
 
 .days {
-	@apply grid grid-cols-7 gap-4;
+	@apply grid grid-cols-2 md:grid-cols-7 gap-4;
 }
 
 .day {
@@ -47,9 +47,9 @@
 }
 
 .Nav {
-	@apply w-full fixed z-50 h-[72px] top-0 py-4
+	@apply w-full fixed z-50 top-0 py-4 h-[64px] md:h-[72px]
 	bg-rose-500/80 backdrop-blur-sm 
-	text-4xl font-bold text-white text-center;
+	text-2xl md:text-4xl font-bold text-white text-center;
 	font-family: minecraft;
 }
 
@@ -60,7 +60,7 @@
 
 .mainContainer {
 	background: var(--bg);
-	@apply bg-cover bg-no-repeat bg-fixed pt-20;
+	@apply bg-cover bg-no-repeat bg-fixed pt-16 md:pt-20 bg-center;
 }
 
 .currEvents {
