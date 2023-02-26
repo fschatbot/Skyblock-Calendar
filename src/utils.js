@@ -133,6 +133,16 @@ function calcEvents({ day, month, year }) {
 		});
 	}
 
+	// Fishing Event
+	if (day === 0) console.log(1);
+	if (constants.mayor.winner === "Marina" && 1 <= day && day <= 3) {
+		DayEvents.push({
+			name: "Fishing Event",
+			key: "fishing_event",
+			icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/c/c7/Fishing_Rod.png" || "https://assets.mcasset.cloud/1.19.3/assets/minecraft/textures/item/fishing_rod.png",
+		});
+	}
+
 	// Just for testing purposes
 	/*for (let i = 0; i < 2; i++) {
 		DayEvents.push({
