@@ -6,8 +6,7 @@
 	@apply w-full bg-slate-500 rounded-sm px-1 font-medium text-white
 	flex flex-row gap-1;
 }
-.special_mayor,
-.electionOver {
+.special_mayor {
 	@apply !bg-purple-600;
 }
 
