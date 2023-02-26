@@ -52,14 +52,16 @@ function App() {
 
 	return (
 		<div style={{ "--bg": `url(${images[randomImage]})` }} className="mainContainer">
-			<JumpDay currDay={currDay} />
+			<JumpDay activeDayRef={currDay} />
 			<h1 className="Nav">Time: {TimeString}</h1>
-			<h2>
-				Current Events:
+			<div className="currEvents">
+				<h2>Current Events:</h2>
 				{calcEvents(skyDate).map((event) => (
-					<div className="chip">{event.name}</div>
+					<div className="chip" key={event.key}>
+						{event.name}
+					</div>
 				))}
-			</h2>
+			</div>
 			{months}
 		</div>
 	);

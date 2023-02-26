@@ -55,10 +55,24 @@
 
 .jumpDay {
 	@apply fixed bottom-6 right-6 p-3 rounded-xl cursor-pointer text-blue-600
-	bg-white/60 backdrop-blur-3xl;
+	bg-white/60 backdrop-blur-3xl z-50;
 }
 
 .mainContainer {
 	background: var(--bg);
 	@apply bg-cover bg-no-repeat bg-fixed pt-20;
+}
+
+.currEvents {
+	@apply gap-1 flex flex-row items-center justify-center
+	bg-white/80 px-2 py-1 rounded-lg;
+}
+
+.currEvents h2 {
+	@apply text-black font-semibold text-xl;
+}
+
+.chip {
+	@apply px-4 py-1 rounded-3xl bg-blue-600/80 text-white font-medium
+	text-center;
 }
