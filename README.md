@@ -9,7 +9,33 @@
 
 The best hypixel skyblock calendar on the web. It caters to every SINGLE event that takes place in the game. All of this plus a beautiful UI and a lot of features. This calendar even caters to mayor based events, timed events (dark auction, jerry's workshop, etc) and fixed events. Ensure that you don't miss out on any event by using this calendar. So save in your bookmark and share it with others if you have to!
 
-# TODO
+[CHECK OUT THE WEBSITE!!](https://fschatbot.github.io/Skyblock-Calendar/)
+
+# How to Run
+
+If you are going to be reuploading it then please give permission!
+
+```
+npm clean-install
+npm run build
+serve -s build
+```
+
+# Credits
+
+## Code
+
+- https://skyblock-api.matdoes.dev/ (For Head Skins)
+- https://hypixel.inventivetalent.org/
+- https://skyblock-npcs.matdoes.dev/
+
+## Reference
+
+- [Hypixel Fandom](https://hypixel-skyblock.fandom.com/wiki/Hypixel_SkyBlock_Wiki)
+- [Hypixel Wiki](https://wiki.hypixel.net/)
+- https://ugly-guy.github.io/calendar/
+
+## TODO
 
 - [x] Add Icons
 - [x] Add screenshots as backgrounds
@@ -27,20 +53,3 @@ The best hypixel skyblock calendar on the web. It caters to every SINGLE event t
   - [ ] Jerry
 - [ ] Make events viewing toggleable
 - [ ] Make an animated favicon (match with the skyblock time)
-
-# How to Run
-
-```
-npm install
-npm run build
-serve -s build
-```
-
-# Credits
-
-- https://hypixel.inventivetalent.org/
-- https://ugly-guy.github.io/calendar/
-- skyblock-api.matdoes.dev
-- Hypixel Wiki and Fandom
-- FoxInFlame (Color Code)
-- https://skyblock-npcs.matdoes.dev/
