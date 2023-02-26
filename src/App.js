@@ -161,19 +161,16 @@ function DisplayMayor() {
 
 	return (
 		<>
-			{/* <Tooltip anchorSelect=".mayorDisplay" place="top">
-				{currMayor.perks.map((perk) => perk.description)}
-			</Tooltip> */}
 			<div className="mayorDisplay">
 				<img src={`https://mc-heads.net/avatar/${MayorSkins[currMayor.name]}`} alt={currMayor.name} />
 			</div>
 			<Tooltip anchorSelect=".mayorDisplay" place="top">
 				{currMayor.perks.map((perk) => {
 					return (
-						<>
+						<div key={perk.name}>
 							<h1>{perk.name}</h1>
 							<span>{perk.description.replace(/§./g, "")}</span>
-						</>
+						</div>
 					);
 				})}
 			</Tooltip>
