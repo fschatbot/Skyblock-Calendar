@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import "./App.css";
 import { constants, calcDay, calcEvents, calendarFetch } from "./utils";
-import Favicon from "react-favicon";
 
 // Importing all the background images
 import image1 from "./backgrounds/bg1.png";
