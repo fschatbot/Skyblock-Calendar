@@ -8,8 +8,6 @@ on:
 
 permissions:
   contents: write
-  actions: write
-  statuses: write
 
 jobs:
   build:
