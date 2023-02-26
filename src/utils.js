@@ -133,6 +133,15 @@ function calcEvents({ day, month, year }) {
 		});
 	}
 
+	// Just for testing purposes
+	/*for (let i = 0; i < 2; i++) {
+		DayEvents.push({
+			name: "Dummy Event",
+			key: "dummy",
+			icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/0/01/Island_NPC.png",
+		});
+	}*/
+
 	return DayEvents;
 }
 
