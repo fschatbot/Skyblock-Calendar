@@ -4,7 +4,7 @@ import "./styles/calendar.css";
 import "./styles/event.css";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
-import { constants, calcDay, calcEvents, calendarFetch } from "./utils";
+import { constants, calcDay, calcEvents, calendarFetch, formatMin } from "./utils";
 
 // Importing all the background images
 import image1 from "./backgrounds/bg1.png";
@@ -68,6 +68,7 @@ function App() {
 				))}
 			</div>
 			{months}
+			<Tooltip anchorSelect=".day" />
 		</div>
 	);
 }
@@ -96,6 +97,7 @@ function Day({ day, month, year, active }) {
 	const isActive = active.day - 1 === day && active.month - 1 === month;
 	const [width, setWidth] = useState(0);
 	const props = isActive ? { ref: active.currDay } : {};
+	const [ToolTip, setToolTip] = useState("");
 
 	useEffect(() => {
 		if (isActive) {
@@ -108,8 +110,22 @@ function Day({ day, month, year, active }) {
 		}
 	}, [isActive, active.currDay]);
 
+	function calcDistance() {
+		// Calculating the Date instance when the day started
+		const totalDays = (year - 1) * constants.DAYS_IN_YEAR + month * constants.DAYS_IN_MONTH + day;
+		const timePassed = totalDays * constants.SECONDS_PER_DAY * 1000;
+		const dayDate = new Date(constants.year_0 + timePassed);
+
+		// Calculating the difference in now V/S dayDate in minutes
+		const diff = dayDate - Date.now();
+		const diffMin = diff / 1000 / 60;
+		if (diffMin < -constants.MINUTES_PER_DAY) return `Day ENDED`;
+		if (-constants.MINUTES_PER_DAY <= diffMin && diffMin <= 0) return `ACTIVE`;
+		return `Day starts in: ${formatMin(Math.floor(diffMin))}`;
+	}
+
 	return (
-		<div className={"day" + (isActive ? " active" : "")} style={{ "--width": `${width * 100}%` }} {...props}>
+		<div className={"day" + (isActive ? " active" : "")} style={{ "--width": `${width * 100}%` }} {...props} data-tooltip-content={ToolTip} onMouseOver={() => setToolTip(calcDistance())}>
 			<h1>
 				{day + 1}
 				{(day + 1).rank()}

@@ -182,5 +182,20 @@ Number.prototype.rank = function () {
 	return ranks[this] || "th";
 };
 
+function formatMin(min) {
+	min = Math.abs(min);
+	let days = Math.floor(min / (24 * 60));
+	min %= 24 * 60;
+
+	let hours = Math.floor(min / 60);
+	min %= 60;
+
+	let string = "";
+	if (days) string += `${days}d `;
+	if (hours) string += `${hours}h `;
+	if (min) string += `${min}m `;
+	return string;
+}
+
 export default calcDay;
-export { constants, calcEvents, calcDay, calendarFetch };
+export { constants, calcEvents, calcDay, calendarFetch, formatMin };
