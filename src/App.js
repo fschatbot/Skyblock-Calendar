@@ -47,8 +47,8 @@ function App() {
 			!loading &&
 			Array(constants.MONTHS_IN_YEAR)
 				.fill(0)
-				.map((_, i) => <Month month={i} year={year} key={i} active={{ month, day }} />),
-		[month, day, year, loading]
+				.map((_, i) => <Month month={i} year={year} key={i} />),
+		[month, day, year, loading] // eslint-disable-line
 	);
 	const actionBarMemo = useMemo(() => !loading && <ActionBar />, [loading]);
 
@@ -76,8 +76,9 @@ function App() {
 	);
 }
 
-function Month({ month, year, active }) {
+function Month({ month, year }) {
 	const monthName = constants.MONTHS[month + 1].replace("_", " ").title();
+	const { skyDate: active } = useContext(AppContext);
 
 	return (
 		<div className={"month" + (active.month - 1 === month ? " active" : "")}>
@@ -87,19 +88,19 @@ function Month({ month, year, active }) {
 				{Array(constants.DAYS_IN_MONTH)
 					.fill(0)
 					.map((_, i) => (
-						<Day day={i} month={month} year={year} key={`${month}-${i}`} active={active} />
+						<Day day={i} month={month} year={year} key={`${month}-${i}`} />
 					))}
 			</div>
 		</div>
 	);
 }
 
-function Day({ day, month, year, active }) {
+function Day({ day, month, year }) {
 	const events = calcEvents({ day, month, year });
 	const empty = events.length === 0 ? " empty" : "";
+	const { currDay: activeDayRef, skyDate: active } = useContext(AppContext);
 	const isActive = active.day - 1 === day && active.month - 1 === month;
 	const [width, setWidth] = useState(0);
-	const { currDay: activeDayRef } = useContext(AppContext);
 	const props = isActive ? { ref: activeDayRef } : {};
 	const [ToolTip, setToolTip] = useState("");
 
@@ -112,7 +113,7 @@ function Day({ day, month, year, active }) {
 			}, 100);
 			return () => clearInterval(interval);
 		}
-	}, [isActive, activeDayRef.current]);
+	}, [isActive, activeDayRef]);
 
 	function calcDistance() {
 		// Calculating the Date instance when the day started
