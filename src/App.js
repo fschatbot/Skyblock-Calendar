@@ -5,6 +5,7 @@ import "./styles/event.css";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 import { constants, calcDay, calcEvents, calendarFetch, formatMin } from "./utils";
+import McText from "mctext-react";
 
 // Importing all the background images
 import image1 from "./backgrounds/bg1.png";
@@ -49,6 +50,7 @@ function App() {
 				.map((_, i) => <Month month={i} year={year} key={i} active={{ month, day, currDay }} />),
 		[month, day, year, loading]
 	);
+	const mayorElem = useMemo(() => <DisplayMayor />, [month]);
 
 	calendarFetch.then(() => setLoading(false));
 
@@ -57,7 +59,7 @@ function App() {
 	return (
 		<div style={{ "--bg": `url(${images[randomImage]})` }} className="mainContainer">
 			<JumpDay activeDayRef={currDay} />
-			<DisplayMayor />
+			{mayorElem}
 			<h1 className="Nav">Time: {TimeString}</h1>
 			<div className="currEvents">
 				<h2>Current Events:</h2>
@@ -174,18 +176,21 @@ function DisplayMayor() {
 		Aatrox: "c1bdf505bb8c0f1f3365a03032de1931663ff71c57e022558de312b8f1b5c445",
 	};
 	// console.log(currMayor);
+	const colorPallete = { ...McText.defaultProps.colormap, gray: "#d1d5db" }; // Changing the color of gray to better suit the css
 
 	return (
 		<>
 			<div className="mayorDisplay">
 				<img src={`https://mc-heads.net/avatar/${MayorSkins[currMayor.name]}`} alt={currMayor.name} />
 			</div>
-			<Tooltip anchorSelect=".mayorDisplay" place="top">
+			<Tooltip anchorSelect=".mayorDisplay" place="top" className="mayorToolTip">
 				{currMayor.perks.map((perk) => {
 					return (
 						<div key={perk.name}>
 							<h1>{perk.name}</h1>
-							<span>{perk.description.replace(/§./g, "")}</span>
+							<McText style={{ fontFamily: "inherit" }} colormap={colorPallete}>
+								{perk.description}
+							</McText>
 						</div>
 					);
 				})}
