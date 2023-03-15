@@ -118,7 +118,7 @@ function calcEvents({ day, month, year }) {
 		if (event.mayor) {
 			const winner = constants.mayor.candidates.filter((a) => a.name === constants.mayor.winner)[0];
 			if (event.mayor !== winner.name) return;
-			if (winner.perks.every((perk) => perk !== event.name)) return;
+			if (winner.perks.every((perk) => perk.name !== event.name)) return;
 		}
 		event.when.forEach((when) => {
 			let startDay = when.start.day || day;
