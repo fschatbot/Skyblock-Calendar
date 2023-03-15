@@ -54,7 +54,7 @@ function App() {
 
 	calendarFetch.then(() => setLoading(false));
 
-	if (loading) return <h1>Loading...</h1>;
+	if (loading) return <h1 className="loading">Loading...</h1>;
 
 	return (
 		<div style={{ "--bg": `url(${images[randomImage]})` }} className="mainContainer">

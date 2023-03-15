@@ -46,3 +46,8 @@
 .react-tooltip span {
 	@apply text-white/90;
 }
+
+.loading {
+	@apply text-4xl font-minecraft h-screen
+	flex justify-center items-center;
+}
