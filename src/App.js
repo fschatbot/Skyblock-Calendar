@@ -121,8 +121,8 @@ function Day({ day, month, year, active }) {
 		// Calculating the difference in now V/S dayDate in minutes
 		const diff = dayDate - Date.now();
 		const diffMin = diff / 1000 / 60;
-		if (diffMin < -constants.MINUTES_PER_DAY) return `Day ENDED`;
-		if (-constants.MINUTES_PER_DAY <= diffMin && diffMin <= 0) return `ACTIVE`;
+		if (diffMin < -constants.MINUTES_PER_DAY) return `Day ended ${formatMin(Math.floor(diffMin + constants.MINUTES_PER_DAY))} ago`;
+		if (-constants.MINUTES_PER_DAY <= diffMin && diffMin <= 0) return `Day ACTIVE`;
 		return `Day starts in: ${formatMin(Math.floor(diffMin))}`;
 	}
 
