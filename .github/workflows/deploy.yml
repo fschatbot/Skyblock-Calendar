@@ -23,7 +23,7 @@ jobs:
           node-version: 16.x
       - name: Create local changes
         run: |
-          npm clean-install --no-audit --no-fund
+          npm clean-install --no-audit --no-fund --force
           CI='' npm run build
       - name: Commit files
         run: |
