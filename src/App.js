@@ -1,10 +1,10 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, useContext } from "react";
 import "./styles/App.css";
 import "./styles/calendar.css";
 import "./styles/event.css";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
-import { constants, calcDay, calcEvents, calendarFetch, formatMin } from "./utils";
+import { constants, calcDay, calcEvents, calendarFetch, formatMin, AppContext } from "./utils";
 import McText from "mctext-react";
 
 // Importing all the background images
@@ -47,31 +47,32 @@ function App() {
 			!loading &&
 			Array(constants.MONTHS_IN_YEAR)
 				.fill(0)
-				.map((_, i) => <Month month={i} year={year} key={i} active={{ month, day, currDay }} />),
+				.map((_, i) => <Month month={i} year={year} key={i} active={{ month, day }} />),
 		[month, day, year, loading]
 	);
-	const mayorElem = useMemo(() => <DisplayMayor />, [month]);
+	const actionBarMemo = useMemo(() => !loading && <ActionBar />, [loading]);
 
 	calendarFetch.then(() => setLoading(false));
 
 	if (loading) return <h1 className="loading">Loading...</h1>;
 
 	return (
-		<div style={{ "--bg": `url(${images[randomImage]})` }} className="mainContainer">
-			<JumpDay activeDayRef={currDay} />
-			{mayorElem}
-			<h1 className="Nav">Time: {TimeString}</h1>
-			<div className="currEvents">
-				<h2>Current Events:</h2>
-				{calcEvents(skyDate).map((event) => (
-					<div className="chip" key={event.key}>
-						{event.name}
-					</div>
-				))}
+		<AppContext.Provider value={{ skyDate, currDay }}>
+			<div style={{ "--bg": `url(${images[randomImage]})` }} className="mainContainer">
+				{actionBarMemo}
+				<h1 className="Nav">Time: {TimeString}</h1>
+				<div className="currEvents">
+					<h2>Current Events:</h2>
+					{calcEvents(skyDate).map((event) => (
+						<div className="chip" key={event.key}>
+							{event.name}
+						</div>
+					))}
+				</div>
+				{months}
+				<Tooltip anchorSelect=".day" />
 			</div>
-			{months}
-			<Tooltip anchorSelect=".day" />
-		</div>
+		</AppContext.Provider>
 	);
 }
 
@@ -98,19 +99,20 @@ function Day({ day, month, year, active }) {
 	const empty = events.length === 0 ? " empty" : "";
 	const isActive = active.day - 1 === day && active.month - 1 === month;
 	const [width, setWidth] = useState(0);
-	const props = isActive ? { ref: active.currDay } : {};
+	const { currDay: activeDayRef } = useContext(AppContext);
+	const props = isActive ? { ref: activeDayRef } : {};
 	const [ToolTip, setToolTip] = useState("");
 
 	useEffect(() => {
 		if (isActive) {
-			active.currDay.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+			activeDayRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
 			let interval = setInterval(() => {
 				const { hour, minute } = calcDay();
 				setWidth((hour * 60 + minute) / (60 * 24));
 			}, 100);
 			return () => clearInterval(interval);
 		}
-	}, [isActive, active.currDay]);
+	}, [isActive, activeDayRef.current]);
 
 	function calcDistance() {
 		// Calculating the Date instance when the day started
@@ -146,9 +148,11 @@ function Day({ day, month, year, active }) {
 	);
 }
 
-function JumpDay({ activeDayRef }) {
+function JumpDay() {
+	const { currDay } = useContext(AppContext);
+
 	return (
-		<div className="jumpDay" onClick={() => activeDayRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })}>
+		<div className="jumpDay actionItem" onClick={() => currDay.current?.scrollIntoView({ behavior: "smooth", block: "center" })}>
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
 				<path
 					strokeLinecap="round"
@@ -180,7 +184,7 @@ function DisplayMayor() {
 
 	return (
 		<>
-			<div className="mayorDisplay">
+			<div className="mayorDisplay actionItem">
 				<img src={`https://mc-heads.net/avatar/${MayorSkins[currMayor.name]}`} alt={currMayor.name} />
 			</div>
 			<Tooltip anchorSelect=".mayorDisplay" place="top" className="mayorToolTip">
@@ -196,6 +200,30 @@ function DisplayMayor() {
 				})}
 			</Tooltip>
 		</>
+	);
+}
+
+function Options() {
+	return (
+		<div className="optionDisplay actionItem">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+				<path
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"
+				/>
+			</svg>
+		</div>
+	);
+}
+
+function ActionBar() {
+	return (
+		<div className="actionBar">
+			<Options />
+			<DisplayMayor />
+			<JumpDay />
+		</div>
 	);
 }
 

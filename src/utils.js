@@ -1,3 +1,5 @@
+import { createContext } from "react";
+
 const year_0 = new Date("Jun 11 2019 17:55:00 GMT").getTime() || 1.5602757e12;
 
 let constants = {
@@ -83,7 +85,7 @@ const calendarFetch = fetch("https://hypixel-api.inventivetalent.org/api/skybloc
 	.then((data) => {
 		constants.mayor = data.previous;
 	})
-	.finally(() => console.log((window.constants = constants)));
+	.finally(() => process.env.NODE_ENV === "development" && console.log((window.constants = constants)));
 
 function calcDay() {
 	const date = Date.now() - year_0;
@@ -197,5 +199,7 @@ function formatMin(min) {
 	return string;
 }
 
+const AppContext = createContext();
+
 export default calcDay;
-export { constants, calcEvents, calcDay, calendarFetch, formatMin };
+export { constants, calcEvents, calcDay, calendarFetch, formatMin, AppContext };
