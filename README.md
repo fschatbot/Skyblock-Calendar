@@ -42,14 +42,15 @@ serve -s build
   - https://hypixel.net/threads/skyblock-cinematic-screenshots.3411421/
 - [x] Add a bar for the amount of day that has passed
 - [x] Add more timers
-- [ ] Add tooltip on hover for time left for the day to arrive
+- [x] Add tooltip on hover for time left for the day to arrive
 - [ ] Update the metadata of the index.html
 - [x] Make the [Readme](README.md) more beautiful
-- [ ] Make Credit Fotter
+- [ ] Make Credit Footer
 - [ ] Mayor Based Events
   - [x] Mining Fiesta
   - [x] Fishing Festival
   - [ ] Foxy
   - [ ] Jerry
 - [ ] Make events viewing toggleable
+- [ ] Add Notifications
 - [ ] Make an animated favicon (match with the skyblock time)
