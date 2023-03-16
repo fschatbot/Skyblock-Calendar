@@ -11,7 +11,7 @@
 }
 
 .day {
-	@apply w-52 h-52 shadow-lg rounded-md overflow-hidden backdrop-blur-sm bg-white/20
+	@apply w-44 h-44 md:w-52 md:h-52 shadow-lg rounded-md overflow-hidden backdrop-blur-sm bg-white/20
 	flex flex-col relative;
 
 	@apply before:content-[''] before:absolute before:h-full before:w-[var(--width)] before:bg-black/20 before:transition-[width];

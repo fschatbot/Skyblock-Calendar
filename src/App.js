@@ -284,7 +284,7 @@ function ConfigMenu() {
 						<h2>Display Events</h2>
 						{eventListMemo}
 					</div>
-					<div className="Option">
+					<div className="Option !hidden md:!flex">
 						<h2>Notify Me For</h2>
 						<span>Under Construction 🚧</span>
 					</div>
