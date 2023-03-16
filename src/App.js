@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef, useContext } from "react";
+import { useState, useEffect, useMemo, useRef, useContext, memo } from "react";
 import "./styles/App.css";
 import "./styles/calendar.css";
 import "./styles/event.css";
@@ -19,22 +19,40 @@ import image8 from "./backgrounds/bg8.png";
 
 const images = [image1, image2, image3, image4, image5, image6, image7, image8];
 
-function App() {
+function TopLevelLoader() {
+	// This function is used to load the calendar data before rendering the app
 	const [loading, setLoading] = useState(true);
+	calendarFetch.then(() => setLoading(false));
+
+	if (loading) return <h1 className="loading">Loading...</h1>;
+	return <App />;
+}
+
+function App() {
 	const [skyDate, setSkyDate] = useState({});
+	const [configActive, setConfigActive] = useState(true);
 	const [randomImage] = useState(Math.floor(Math.random() * images.length));
+	const [config, setConfig] = useState(localStorage.getItem("displayConfig") || {});
+	function changeConfig(key, value) {
+		console.log(key, value);
+		setConfig((prevConfig) => {
+			const newConfig = { ...prevConfig, [key]: value };
+			localStorage.setItem("displayConfig", JSON.stringify(newConfig));
+			return newConfig;
+		});
+	}
+
 	const currDay = useRef();
 
 	// Simply sets the skyDate to calcDay() every 100ms
 	useEffect(() => {
-		if (loading) return;
 		currDay.current?.scrollIntoView({ behavior: "smooth", block: "center" });
 
 		const interval = setInterval(() => {
 			setSkyDate(calcDay());
 		}, 100);
 		return () => clearInterval(interval);
-	}, [loading]);
+	}, []);
 
 	let { hour, minute, day, month, year } = skyDate;
 	const isPM = hour >= 12;
@@ -44,21 +62,18 @@ function App() {
 	const TimeString = `${hour}:${minute}${isPM ? "pm" : "am"} ${day}/${month}/${year} ${skyDate.monthName?.replace("_", " ")?.title()}`;
 	const months = useMemo(
 		() =>
-			!loading &&
 			Array(constants.MONTHS_IN_YEAR)
 				.fill(0)
 				.map((_, i) => <Month month={i} year={year} key={i} />),
-		[month, day, year, loading] // eslint-disable-line
+		[month, day, year] // eslint-disable-line
 	);
-	const actionBarMemo = useMemo(() => !loading && <ActionBar />, [loading]);
-
-	calendarFetch.then(() => setLoading(false));
-
-	if (loading) return <h1 className="loading">Loading...</h1>;
+	const actionBarMemo = useMemo(() => <ActionBar />, []);
+	const ConfigMenuMemo = useMemo(() => <ConfigMenu />, []);
 
 	return (
-		<AppContext.Provider value={{ skyDate, currDay }}>
+		<AppContext.Provider value={{ skyDate, currDay, configActive, setConfigActive, config, setConfig: changeConfig }}>
 			<div style={{ "--bg": `url(${images[randomImage]})` }} className="mainContainer">
+				{configActive && ConfigMenuMemo}
 				{actionBarMemo}
 				<h1 className="Nav">Time: {TimeString}</h1>
 				<div className="currEvents">
@@ -205,8 +220,10 @@ function DisplayMayor() {
 }
 
 function Options() {
+	const { setConfigActive } = useContext(AppContext);
+
 	return (
-		<div className="optionDisplay actionItem">
+		<div className="optionDisplay actionItem" onClick={() => setConfigActive(true)}>
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
 				<path
 					strokeLinecap="round"
@@ -228,4 +245,57 @@ function ActionBar() {
 	);
 }
 
+function ConfigMenu() {
+	const { config, setConfig, setConfigActive } = useContext(AppContext);
+
+	function Item({ name, icon, enabled }) {
+		enabled = enabled ?? config[name] ?? true;
+		return (
+			<div className="listItem">
+				<input type="checkbox" id={name} defaultChecked={enabled} onClick={() => setConfig(name, !enabled)} />
+				{icon && <img src={icon} className="h-4 w-4" />}
+				<span htmlFor={name}>{name}</span>
+			</div>
+		);
+	}
+
+	function EventList() {
+		return (
+			<>
+				{constants.events.map((event) => (
+					<Item key={event.name} name={event.name} icon={event.icon} enabled={config[event.name] ?? true} />
+				))}
+				<Item name="Dwarven Kings" />
+				<Item name="Dark Auction" icon="https://mc-heads.net/head/7ab83858ebc8ee85c3e54ab13aabfcc1ef2ad446d6a900e471c3f33b78906a5b" />
+				<Item name="Jacob's Event" icon="https://static.wikia.nocookie.net/hypixel-skyblock/images/5/5c/Enchanted_Wheat.png" />
+			</>
+		);
+	}
+
+	const eventListMemo = useMemo(EventList, [config]);
+
+	return (
+		<div className="ConfigContainer">
+			<div className="ConfigMenu">
+				<h1>Config</h1>
+				<div className="Options">
+					<div className="Option">
+						<h2>Display Events</h2>
+						{eventListMemo}
+					</div>
+					<div className="Option">
+						<h2>Notify Me For</h2>
+					</div>
+				</div>
+				<button className="closeIcon" onClick={() => setConfigActive(false)}>
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+						<path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+					</svg>
+				</button>
+			</div>
+		</div>
+	);
+}
+
 export default App;
+export { TopLevelLoader };

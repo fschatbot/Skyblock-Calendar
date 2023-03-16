@@ -2,11 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./fonts/minecraft.ttf";
 import "./index.css";
-import App from "./App";
+import { TopLevelLoader } from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<React.StrictMode>
-		<App />
+		<TopLevelLoader />
 	</React.StrictMode>
 );
