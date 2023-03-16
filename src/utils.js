@@ -76,6 +76,7 @@ let constants = {
 		Grandan: "1d1f4161af6d4fdfbac17adcf9d0b6f1ffb517e7b936aad9c37b747ce64ec4c6",
 	},
 	year_0,
+	eventConfig: localStorage.getItem("displayConfig") ? JSON.parse(localStorage.getItem("displayConfig")) : {},
 };
 
 const calendarFetch = fetch("https://hypixel-api.inventivetalent.org/api/skyblock/calendar")
@@ -130,7 +131,7 @@ function calcEvents({ day, month, year }) {
 			let endDay = when.end.day || day;
 			let startMonth = when.start.month || month;
 			let endMonth = when.end.month || month;
-			if (startDay <= day && day <= endDay && startMonth <= month && month <= endMonth) {
+			if (startDay <= day && day <= endDay && startMonth <= month && month <= endMonth && (constants.eventConfig[event.name] ?? true)) {
 				DayEvents.push(event);
 			}
 		});
@@ -138,7 +139,7 @@ function calcEvents({ day, month, year }) {
 
 	// The dark auction appears every 3 days
 	const days = constants.DAYS_IN_YEAR * (year - 1) + constants.DAYS_IN_MONTH * (month - 1) + day;
-	if (days % 3 === 0)
+	if (days % 3 === 0 && (constants.eventConfig["Dark Auction"] ?? true))
 		DayEvents.push({
 			name: "Dark Auction",
 			key: "dark_auction",
@@ -146,11 +147,13 @@ function calcEvents({ day, month, year }) {
 		});
 
 	// Jacob's event
-	if (days % 3 === 1) DayEvents.push({ name: "Jacob's Event", key: "jacob", icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/5/5c/Enchanted_Wheat.png" });
+	if (days % 3 === 1 && (constants.eventConfig["Jacob's Event"] ?? true))
+		DayEvents.push({ name: "Jacob's Event", key: "jacob", icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/5/5c/Enchanted_Wheat.png" });
 
 	// Calculating the drawven kings (First King was King Erren)
 	const king = (5 + days) % Object.keys(constants.DwarvenKing).length;
-	DayEvents.push({ name: `King ${Object.keys(constants.DwarvenKing)[king]}`, key: "dwarven_king", icon: "https://mc-heads.net/head/" + Object.values(constants.DwarvenKing)[king] });
+	(constants.eventConfig["Dwarven Kings"] ?? true) &&
+		DayEvents.push({ name: `King ${Object.keys(constants.DwarvenKing)[king]}`, key: "dwarven_king", icon: "https://mc-heads.net/head/" + Object.values(constants.DwarvenKing)[king] });
 
 	// Calculating if special mayor event is happening
 	if ((year % 8 === 0 && month >= 6) || (year % 8 === 1 && month <= 3)) {

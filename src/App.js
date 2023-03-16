@@ -30,14 +30,15 @@ function TopLevelLoader() {
 
 function App() {
 	const [skyDate, setSkyDate] = useState({});
-	const [configActive, setConfigActive] = useState(true);
+	const [configActive, setConfigActive] = useState(false);
 	const [randomImage] = useState(Math.floor(Math.random() * images.length));
-	const [config, setConfig] = useState(localStorage.getItem("displayConfig") || {});
+	const [config, setConfig] = useState(constants.eventConfig);
 	function changeConfig(key, value) {
 		console.log(key, value);
 		setConfig((prevConfig) => {
 			const newConfig = { ...prevConfig, [key]: value };
 			localStorage.setItem("displayConfig", JSON.stringify(newConfig));
+			constants.eventConfig = newConfig;
 			return newConfig;
 		});
 	}
@@ -285,6 +286,7 @@ function ConfigMenu() {
 					</div>
 					<div className="Option">
 						<h2>Notify Me For</h2>
+						<span>Under Construction 🚧</span>
 					</div>
 				</div>
 				<button className="closeIcon" onClick={() => setConfigActive(false)}>
