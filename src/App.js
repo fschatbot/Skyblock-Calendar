@@ -34,7 +34,6 @@ function App() {
 	const [randomImage] = useState(Math.floor(Math.random() * images.length));
 	const [config, setConfig] = useState(constants.eventConfig);
 	function changeConfig(key, value) {
-		console.log(key, value);
 		setConfig((prevConfig) => {
 			const newConfig = { ...prevConfig, [key]: value };
 			localStorage.setItem("displayConfig", JSON.stringify(newConfig));
