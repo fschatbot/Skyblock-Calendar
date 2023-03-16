@@ -9,7 +9,10 @@ let constants = {
 			key: "spookyFestival",
 			name: "Spooky Festival",
 			when: [{ start: { month: 8, day: 29 }, end: { month: 8, day: 31 } }],
-			icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/c/ca/Fear_Mongerer_Sprite.png" || "https://static.wikia.nocookie.net/hypixel-skyblock/images/2/26/Jack_o%27_Lantern.png",
+			icon:
+				"https://mc-heads.net/head/856645744bfca6af03c23e297e6ede79b528d1d24ec50d3a64abec3a0834b945" ||
+				"https://static.wikia.nocookie.net/hypixel-skyblock/images/c/ca/Fear_Mongerer_Sprite.png" ||
+				"https://static.wikia.nocookie.net/hypixel-skyblock/images/2/26/Jack_o%27_Lantern.png",
 		},
 		{
 			key: "zoo",
@@ -18,7 +21,7 @@ let constants = {
 				{ start: { month: 4, day: 1 }, end: { month: 4, day: 3 } },
 				{ start: { month: 10, day: 1 }, end: { month: 10, day: 3 } },
 			],
-			icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/a/a8/Traveling_Zoo.png",
+			icon: "https://mc-heads.net/head/e49fe595c6a08adec8b9dab0986853271c6b87d897d7318b1badad2c34bd5a0e",
 		},
 		{
 			key: "jerryWorkshop",
