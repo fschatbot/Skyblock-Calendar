@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef, useContext, memo } from "react";
+import { useState, useEffect, useMemo, useRef, useContext } from "react";
 import "./styles/App.css";
 import "./styles/calendar.css";
 import "./styles/event.css";
@@ -254,7 +254,7 @@ function ConfigMenu() {
 		return (
 			<div className="listItem">
 				<input type="checkbox" id={name} defaultChecked={enabled} onClick={() => setConfig(name, !enabled)} />
-				{icon && <img src={icon} className="h-4 w-4" />}
+				{icon && <img src={icon} className="h-4 w-4" alt={name} />}
 				<span htmlFor={name}>{name}</span>
 			</div>
 		);
