@@ -44,7 +44,7 @@
 }
 
 .react-tooltip {
-	@apply z-40 max-w-xs;
+	@apply z-40 max-w-xs !rounded-xl;
 }
 .react-tooltip h1 {
 	@apply font-medium text-lg;
