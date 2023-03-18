@@ -163,6 +163,19 @@ function calcEvents({ day, month, year }) {
 		});
 	}
 
+	// Bingo Event
+	// Calculating the Date instance when the day started
+	const totalDays = (year - 1) * constants.DAYS_IN_YEAR + month * constants.DAYS_IN_MONTH + day;
+	const timePassed = totalDays * constants.SECONDS_PER_DAY * 1000;
+	const dayDate = new Date(constants.year_0 + timePassed);
+	if (dayDate.getDate() <= 7 && (constants.eventConfig["Bingo Event"] ?? true)) {
+		DayEvents.push({
+			name: "Bingo Event",
+			key: "bingo",
+			icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/3/3c/Bingo.png",
+		});
+	}
+
 	// Just for testing purposes
 	// const DummyEvent = {
 	// 	name: "Dummy Event",
