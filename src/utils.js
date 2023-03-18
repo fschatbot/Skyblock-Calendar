@@ -26,7 +26,7 @@ let constants = {
 		{
 			key: "jerryWorkshop",
 			name: "Jerry's Workshop",
-			when: [{ start: { month: 12, day: 1 }, end: { month: 1, day: 1 } }],
+			when: [{ start: { month: 12, day: 1 }, end: { month: 12, day: 31 } }],
 			icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/b/ba/Jerry%27s_Workshop_Sprite.png",
 		},
 		{
