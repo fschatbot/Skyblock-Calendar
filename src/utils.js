@@ -187,7 +187,7 @@ function calcEvents({ day, month, year }) {
 	return DayEvents;
 }
 
-/*eslint no-extend-native: ["error", { "exceptions": ["String", "Number"] }]*/
+/*eslint no-extend-native: ["error", { "exceptions": ["String", "Number", "Date"] }]*/
 String.prototype.title = function () {
 	return this.split(" ")
 		.map((word) => word[0].toUpperCase() + word.slice(1))
@@ -201,6 +201,32 @@ Number.prototype.rank = function () {
 		3: "rd",
 	};
 	return ranks[this] || "th";
+};
+/*
+ * A simple function for formating string with a date
+ * @param {string} format - The format of the date
+ * @returns {string} - The formatted date
+ */
+Date.prototype.preset = function (preset) {
+	const t = (e) => ("0" + e).slice(-2);
+	return preset
+		.replace(/MMMM/g, this.getFullMonth())
+		.replace(/MMM/g, this.getFullMonth().slice(0, 3))
+		.replace(/MM/g, t(this.getMonth() + 1))
+		.replace(/YYYY/g, this.getFullYear())
+		.replace(/DD/g, t(this.getDate()))
+		.replace(/hh/g, t(this.getHours()))
+		.replace(/HH/g, t(this.getHours() > 12 ? this.getHours() - 12 : this.getHours()))
+		.replace(/Hh/g, this.getHours() >= 12 ? "PM" : "AM")
+		.replace(/mm/g, t(this.getMinutes()))
+		.replace(/ss/g, t(this.getSeconds()));
+};
+/*
+ * Returns the month name
+ * returns {string} - The name of the month
+ */
+Date.prototype.getFullMonth = function () {
+	return ["Janurary", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][this.getMonth()];
 };
 
 function formatMin(min) {

@@ -141,11 +141,11 @@ function Day({ day, month, year }) {
 		const diffMin = diff / 1000 / 60;
 		if (diffMin < -constants.MINUTES_PER_DAY) return `Day ended ${formatMin(Math.floor(diffMin + constants.MINUTES_PER_DAY))} ago`;
 		if (-constants.MINUTES_PER_DAY <= diffMin && diffMin <= 0) return `Day ACTIVE`;
-		return `Day starts in: ${formatMin(Math.floor(diffMin))}`;
+		return `Day starts in: ${formatMin(Math.floor(diffMin))}<label>${dayDate.preset("HH:mm Hh DD/MM/YYYY")}</label>`;
 	}
 
 	return (
-		<div className={"day" + (isActive ? " active" : "")} style={{ "--width": `${width * 100}%` }} {...props} data-tooltip-content={ToolTip} onMouseOver={() => setToolTip(calcDistance())}>
+		<div className={"day" + (isActive ? " active" : "")} style={{ "--width": `${width * 100}%` }} {...props} data-tooltip-html={ToolTip} onMouseOver={() => setToolTip(calcDistance())}>
 			<h1>
 				{day + 1}
 				{(day + 1).rank()}

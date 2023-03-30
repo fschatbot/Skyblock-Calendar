@@ -53,6 +53,10 @@
 	@apply text-white/90;
 }
 
+.react-tooltip label {
+	@apply block text-xs text-white/70 text-center italic;
+}
+
 .loading {
 	@apply text-4xl font-minecraft h-screen
 	flex justify-center items-center;
