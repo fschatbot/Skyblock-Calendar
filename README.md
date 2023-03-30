@@ -54,3 +54,4 @@ serve -s build
 - [ ] Make events viewing toggleable
 - [ ] Add Notifications
 - [ ] Make an animated favicon (match with the skyblock time)
+- [ ] ~~Change the minecraft font to this: https://postimg.cc/RNKK57RG by Ensis#5902~~
