@@ -172,7 +172,7 @@ function calcEvents({ day, month, year }) {
 		DayEvents.push({
 			name: "Bingo Event",
 			key: "bingo",
-			icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/3/3c/Bingo.png",
+			icon: "https://mc-heads.net/head/d4cd9c707c7092d4759fe2b2b6a713215b6e39919ec4e7afb1ae2b6f8576674c",
 		});
 	}
 
