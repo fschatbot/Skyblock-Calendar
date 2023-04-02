@@ -28,6 +28,7 @@ serve -s build
 - https://skyblock-api.matdoes.dev/ (For Head Skins)
 - https://hypixel.inventivetalent.org/
 - https://skyblock-npcs.matdoes.dev/
+- Enis for the font: [Enis#5902](http://discordapp.com/users/999059797796204594) & [planetminecraft](https://www.planetminecraft.com/member/ensis/)
 
 ## Reference
 
@@ -54,4 +55,4 @@ serve -s build
 - [ ] Make events viewing toggleable
 - [ ] Add Notifications
 - [ ] Make an animated favicon (match with the skyblock time)
-- [ ] ~~Change the minecraft font to this: https://postimg.cc/RNKK57RG by Ensis#5902~~
+- [x] Change the minecraft font to this: https://postimg.cc/RNKK57RG by Ensis#5902

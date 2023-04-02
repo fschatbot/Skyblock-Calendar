@@ -4,7 +4,7 @@ module.exports = {
 	theme: {
 		extend: {
 			fontFamily: {
-				minecraft: "minecraft",
+				minecraft: "minecraft-font",
 			},
 		},
 	},

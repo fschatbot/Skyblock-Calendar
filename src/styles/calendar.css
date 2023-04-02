@@ -2,8 +2,12 @@
 	@apply w-full flex justify-center items-center flex-col;
 }
 
+.month + .month {
+	@apply mt-6;
+}
+
 .month > h1 {
-	@apply text-3xl mb-5 font-semibold text-white;
+	@apply text-4xl mb-5 font-medium text-white font-minecraft;
 }
 
 .days {

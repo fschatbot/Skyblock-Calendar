@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @font-face {
-	font-family: "GoldmanBold";
-	src: local("GoldmanBold"), url("./fonts/minecraft.ttf") format("truetype");
-	font-weight: bold;
+	font-family: "minecraft-font";
+	/* The OTF is smooth and the TTF is sharp edged */
+	src: url("./fonts/minecraft.otf") format("opentype"), url("./fonts/minecraft.ttf") format("truetype");
 }
