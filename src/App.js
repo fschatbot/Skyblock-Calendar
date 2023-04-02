@@ -110,6 +110,8 @@ function Month({ month, year }) {
 	);
 }
 
+const DateFormatter = new Intl.DateTimeFormat("en-GB", { timeStyle: "short", dateStyle: "short", hour12: true });
+
 function Day({ day, month, year }) {
 	const events = calcEvents({ day, month, year });
 	const empty = events.length === 0 ? " empty" : "";
@@ -141,7 +143,7 @@ function Day({ day, month, year }) {
 		const diffMin = diff / 1000 / 60;
 		if (diffMin < -constants.MINUTES_PER_DAY) return `Day ended ${formatMin(Math.floor(diffMin + constants.MINUTES_PER_DAY))} ago`;
 		if (-constants.MINUTES_PER_DAY <= diffMin && diffMin <= 0) return `Day ACTIVE`;
-		return `Day starts in: ${formatMin(Math.floor(diffMin))}<label>${dayDate.preset("HH:mm Hh DD/MM/YYYY")}</label>`;
+		return `Day starts in: ${formatMin(Math.floor(diffMin))}<label>${DateFormatter.format(dayDate)}</label>`;
 	}
 
 	return (
