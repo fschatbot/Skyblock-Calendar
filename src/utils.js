@@ -194,13 +194,16 @@ String.prototype.title = function () {
 		.join(" ");
 };
 
+const english_ordinal_rules = new Intl.PluralRules("en", { type: "ordinal" });
+const suffixes = {
+	one: "st",
+	two: "nd",
+	few: "rd",
+	other: "th",
+};
+
 Number.prototype.rank = function () {
-	const ranks = {
-		1: "st",
-		2: "nd",
-		3: "rd",
-	};
-	return ranks[this] || "th";
+	return suffixes[english_ordinal_rules.select(number)];
 };
 /*
  * A simple function for formating string with a date
