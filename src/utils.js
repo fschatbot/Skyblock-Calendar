@@ -203,7 +203,7 @@ const suffixes = {
 };
 
 Number.prototype.rank = function () {
-	return suffixes[english_ordinal_rules.select(number)];
+	return suffixes[english_ordinal_rules.select(this)];
 };
 /*
  * A simple function for formating string with a date
