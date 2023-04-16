@@ -194,7 +194,7 @@ function DisplayMayor() {
 		Cole: "16422de08848952d1cbead66bbbad6f07191bdcc952f3d1036aeb0c22938f39b",
 		Diana: "83cc1cf672a4b2540be346ead79ac2d9ed19d95b6075bf95be0b6d0da61377be",
 		Diaz: "9cf4737cd444b590545734a6408cbe23c182f4283f167a3e3c09532ccbef17f9",
-		Finnegan: "",
+		Finnegan: "e7747fbee9fb39be39b00d3d483eb2f88b4bae82417ab5cb1b1aa930dd7b6689",
 		Aatrox: "c1bdf505bb8c0f1f3365a03032de1931663ff71c57e022558de312b8f1b5c445",
 	};
 	// console.log(currMayor);
