@@ -1,6 +1,6 @@
 .mainContainer {
 	background: var(--bg);
-	@apply bg-cover bg-no-repeat bg-fixed pt-16 md:pt-[140px] bg-center;
+	@apply bg-cover bg-no-repeat bg-fixed pt-[140px] bg-center;
 }
 
 .Nav {
@@ -11,7 +11,7 @@
 
 .Nav .time {
 	@apply py-4 px-8 bg-rose-500/80 backdrop-blur-sm
-	text-lg sm:text-xl md:text-2xl text-white text-center font-minecraft;
+	text-sm sm:text-lg md:text-2xl text-white text-center font-minecraft;
 }
 
 .currEvents {
@@ -21,7 +21,8 @@
 
 .chip {
 	@apply px-4 py-[2px] rounded-3xl bg-blue-600/80 text-white font-medium
-	text-center;
+	text-center
+	text-sm sm:text-base;
 }
 
 .actionBar {
