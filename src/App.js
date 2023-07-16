@@ -75,16 +75,26 @@ function App() {
 			<div style={{ "--bg": `url(${images[randomImage]})` }} className="mainContainer">
 				{configActive && ConfigMenuMemo}
 				{actionBarMemo}
-				<h1 className="Nav">Time: {TimeString}</h1>
-				<div className="currEvents">
-					<h2>Current Events:</h2>
-					{calcEvents(skyDate).map((event) => (
-						<div className="chip" key={event.key}>
-							{event.name}
-						</div>
-					))}
-				</div>
+				<h1 className="Nav">
+					<span className="time">Time: {TimeString}</span>
+
+					<div className="currEvents">
+						{calcEvents(skyDate).map((event) => (
+							<div className="chip" key={event.key}>
+								{event.name}
+							</div>
+						))}
+					</div>
+				</h1>
+
 				{months}
+
+				<span className="credits">
+					Made by
+					<a href="https://github.com/fschatbot" target="_blank">
+						FSChatBot
+					</a>
+				</span>
 				<Tooltip anchorSelect=".day" />
 			</div>
 		</AppContext.Provider>

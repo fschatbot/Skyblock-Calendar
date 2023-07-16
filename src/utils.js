@@ -17,6 +17,7 @@ let constants = {
 		{
 			key: "zoo",
 			name: "Travelling Zoo",
+			link: "https://hypixel-skyblock.fandom.com/wiki/Traveling_Zoo/Events",
 			when: [
 				{ start: { month: 4, day: 1 }, end: { month: 4, day: 3 } },
 				{ start: { month: 10, day: 1 }, end: { month: 10, day: 3 } },
@@ -148,7 +149,7 @@ function calcEvents({ day, month, year }) {
 
 	// Jacob's event
 	if (days % 3 === 1 && (constants.eventConfig["Jacob's Event"] ?? true))
-		DayEvents.push({ name: "Jacob's Event", key: "jacob", icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/5/5c/Enchanted_Wheat.png" });
+		DayEvents.push({ name: "Jacob's Event", key: "jacob", icon: "https://static.wikia.nocookie.net/hypixel-skyblock/images/5/5c/Enchanted_Wheat.png", link: "https://jacobs.strassburger.org/" });
 
 	// Calculating the drawven kings (First King was King Erren)
 	const king = (5 + days) % Object.keys(constants.DwarvenKing).length;

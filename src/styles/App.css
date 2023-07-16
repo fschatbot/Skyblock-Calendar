@@ -1,18 +1,26 @@
 .mainContainer {
 	background: var(--bg);
-	@apply bg-cover bg-no-repeat bg-fixed pt-16 md:pt-[68px] bg-center;
+	@apply bg-cover bg-no-repeat bg-fixed pt-16 md:pt-[140px] bg-center;
+}
+
+.Nav {
+	@apply fixed z-50 left-1/2 -translate-x-1/2 top-5
+	rounded-xl overflow-hidden
+	flex flex-col;
+}
+
+.Nav .time {
+	@apply py-4 px-8 bg-rose-500/80 backdrop-blur-sm
+	text-lg sm:text-xl md:text-2xl text-white text-center font-minecraft;
 }
 
 .currEvents {
-	@apply gap-1 flex flex-row items-center justify-center
+	@apply gap-1 flex flex-row items-center justify-center w-full
 	bg-white/80 px-2 py-1 rounded-b-xl;
 }
 
-.currEvents h2 {
-	@apply text-black font-semibold text-xl;
-}
 .chip {
-	@apply px-4 py-1 rounded-3xl bg-blue-600/80 text-white font-medium
+	@apply px-4 py-[2px] rounded-3xl bg-blue-600/80 text-white font-medium
 	text-center;
 }
 
@@ -35,12 +43,6 @@
 
 .mayorToolTip span {
 	@apply text-sm font-minecraft;
-}
-
-.Nav {
-	@apply w-full fixed z-50 top-0 py-4 h-14 md:h-[68px]
-	bg-rose-500/80 backdrop-blur-sm 
-	text-lg sm:text-2xl md:text-4xl text-white text-center font-minecraft;
 }
 
 .react-tooltip {
@@ -99,4 +101,13 @@
 	bg-white/20 border-white/20
 	hover:bg-white/30 hover:border-white/30
 	flex justify-center items-center;
+}
+
+.credits {
+	@apply text-white flex justify-center items-center flex-row gap-1
+	mt-5 text-lg;
+}
+
+.credits a {
+	@apply font-bold underline;
 }
