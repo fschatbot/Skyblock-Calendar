@@ -66,6 +66,17 @@ let constants = {
 			mayor: "Cole",
 			icon: "https://assets.mcasset.cloud/1.19.3/assets/minecraft/textures/item/iron_pickaxe.png",
 		},
+		{
+			key: "cotfs",
+			name: "Cult of the Fallen Star",
+			when: [
+				{ start: { day: 7 }, end: { day: 7 } },
+				{ start: { day: 14 }, end: { day: 14 } },
+				{ start: { day: 21 }, end: { day: 21 } },
+				{ start: { day: 28 }, end: { day: 28 } },
+			],
+			icon: "https://mc-heads.net/head/57b3552c5af2ab2dc4e1f84d78ca4c4d676dec068157225a3c2674e5574d2348",
+		},
 	],
 	DwarvenKing: {
 		Brammor: "c83c21cb1b514d4d4e30e9eaf3bc27c8ca8ded19c0624c01f77dfd97f072c0d9",
