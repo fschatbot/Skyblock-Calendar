@@ -91,7 +91,7 @@ function App() {
 
 				<span className="credits">
 					Made by
-					<a href="https://github.com/fschatbot" target="_blank">
+					<a href="https://github.com/fschatbot" target="_blank" rel="noreferrer">
 						FSChatBot
 					</a>
 				</span>
@@ -193,7 +193,7 @@ function JumpDay() {
 }
 
 function DisplayMayor() {
-	const currMayor = constants.mayor.candidates.filter((a) => a.name === constants.mayor.winner)[0];
+	// const currMayor = constants.mayor.candidates.filter((a) => a.name === constants.mayor.winner)[0];
 	const MayorSkins = {
 		Foxy: "3485a717fa0f51d7fadc66a5d5e9853905bef914e3b2848a2f128e63d2db87",
 		Marina: "807fc9bee8d3344e840e4031a37249a4c3c87fc80cf16432cc5c2153d1f9c53d",
@@ -213,10 +213,10 @@ function DisplayMayor() {
 	return (
 		<>
 			<div className="mayorDisplay actionItem">
-				<img src={`https://mc-heads.net/avatar/${MayorSkins[currMayor.name]}`} alt={currMayor.name} />
+				<img src={`https://mc-heads.net/avatar/${MayorSkins[constants.mayor.name]}`} alt={constants.mayor.name} />
 			</div>
 			<Tooltip anchorSelect=".mayorDisplay" place="top" className="mayorToolTip">
-				{currMayor.perks.map((perk) => {
+				{constants.mayor.perks.map((perk) => {
 					return (
 						<div key={perk.name}>
 							<h1>{perk.name}</h1>

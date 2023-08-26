@@ -96,10 +96,10 @@ const calendarFetch = fetch("https://hypixel-api.inventivetalent.org/api/skybloc
 	.then((data) => {
 		constants = { ...constants, ...data.real, ...data.ingame, MONTHS: data.months };
 	})
-	.then(() => fetch("https://skyblock-api.matdoes.dev/election"))
+	.then(() => fetch("https://api.hypixel.net/resources/skyblock/election"))
 	.then((res) => res.json())
 	.then((data) => {
-		constants.mayor = data.previous;
+		constants.mayor = data.mayor;
 	})
 	.finally(() => process.env.NODE_ENV === "development" && console.log((window.constants = constants)));
 
@@ -134,9 +134,8 @@ function calcEvents({ day, month, year }) {
 
 	constants.events.forEach((event) => {
 		if (event.mayor) {
-			const winner = constants.mayor.candidates.filter((a) => a.name === constants.mayor.winner)[0];
-			if (event.mayor !== winner.name) return;
-			if (winner.perks.every((perk) => perk.name !== event.name)) return;
+			if (event.mayor !== constants.mayor.name) return;
+			if (constants.mayor.perks.every((perk) => perk.name !== event.name)) return;
 		}
 		event.when.forEach((when) => {
 			let startDay = when.start.day || day;
