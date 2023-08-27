@@ -2,10 +2,12 @@ import { useState, useEffect, useMemo, useRef, useContext } from "react";
 import "./styles/App.css";
 import "./styles/calendar.css";
 import "./styles/event.css";
+import "./styles/mcStyle.css";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 import { constants, calcDay, calcEvents, calendarFetch, formatMin, AppContext } from "./utils";
-import McText from "mctext-react";
+import { render } from "minecraft-text";
+import parse from "html-react-parser";
 
 // Importing all the background images
 import image1 from "./backgrounds/bg1.png";
@@ -193,7 +195,6 @@ function JumpDay() {
 }
 
 function DisplayMayor() {
-	// const currMayor = constants.mayor.candidates.filter((a) => a.name === constants.mayor.winner)[0];
 	const MayorSkins = {
 		Foxy: "3485a717fa0f51d7fadc66a5d5e9853905bef914e3b2848a2f128e63d2db87",
 		Marina: "807fc9bee8d3344e840e4031a37249a4c3c87fc80cf16432cc5c2153d1f9c53d",
@@ -207,8 +208,6 @@ function DisplayMayor() {
 		Finnegan: "e7747fbee9fb39be39b00d3d483eb2f88b4bae82417ab5cb1b1aa930dd7b6689",
 		Aatrox: "c1bdf505bb8c0f1f3365a03032de1931663ff71c57e022558de312b8f1b5c445",
 	};
-	// console.log(currMayor);
-	const colorPallete = { ...McText.defaultProps.colormap, gray: "#d1d5db" }; // Changing the color of gray to better suit the css
 
 	return (
 		<>
@@ -220,9 +219,7 @@ function DisplayMayor() {
 					return (
 						<div key={perk.name}>
 							<h1>{perk.name}</h1>
-							<McText style={{ fontFamily: "inherit" }} colormap={colorPallete}>
-								{perk.description}
-							</McText>
+							{parse(render(perk.description))}
 						</div>
 					);
 				})}

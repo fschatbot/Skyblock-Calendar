@@ -53,7 +53,7 @@
 	@apply font-medium text-lg;
 }
 .react-tooltip span {
-	@apply text-white/90;
+	/* @apply text-white/90; */
 }
 
 .react-tooltip label {
