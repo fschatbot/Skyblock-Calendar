@@ -277,6 +277,7 @@ function ConfigMenu() {
 				<Item name="Dwarven Kings" />
 				<Item name="Dark Auction" icon="https://mc-heads.net/head/7ab83858ebc8ee85c3e54ab13aabfcc1ef2ad446d6a900e471c3f33b78906a5b" />
 				<Item name="Jacob's Event" icon="https://static.wikia.nocookie.net/hypixel-skyblock/images/5/5c/Enchanted_Wheat.png" />
+				<Item name="Bingo Event" icon="https://mc-heads.net/head/d4cd9c707c7092d4759fe2b2b6a713215b6e39919ec4e7afb1ae2b6f8576674c" />
 			</>
 		);
 	}
