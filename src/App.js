@@ -81,7 +81,7 @@ function App() {
 					<span className="time">Time: {TimeString}</span>
 
 					<div className="currEvents">
-						{calcEvents(skyDate).map((event) => (
+						{calcEvents({ day: skyDate.day - 1, month: skyDate.month - 1, year: skyDate.year }).map((event) => (
 							<div className="chip" key={event.key}>
 								{event.name}
 							</div>
