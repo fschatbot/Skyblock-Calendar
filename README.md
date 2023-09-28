@@ -56,3 +56,6 @@ serve -s build
 - [ ] Add Notifications
 - [ ] Make an animated favicon (match with the skyblock time)
 - [x] Change the minecraft font to this: https://postimg.cc/RNKK57RG by Ensis#5902
+- [ ] Fetchur reset event (with request icon and count)
+- [ ] Daily Commission reset event
+- [ ] NPC daily buy reset event
