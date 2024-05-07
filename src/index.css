@@ -2,8 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* You are meant to put custom classes here */
+@layer utilities {
+	.aClass{ 
+		background-color: red;
+	}
+}
+
 @font-face {
-	font-family: "minecraft-font";
-	/* The OTF is smooth and the TTF is sharp edged */
-	src: url("./fonts/minecraft.otf") format("opentype"), url("./fonts/minecraft.ttf") format("truetype");
+	font-family: "mc";
+	src: url("./fonts/mc.woff") format("woff");
+}
+
+@font-face {
+	font-family: "mc-smooth";
+	src: url("./fonts/mc-smooth.woff") format("woff");
 }

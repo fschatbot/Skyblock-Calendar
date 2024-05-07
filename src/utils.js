@@ -4,6 +4,7 @@ const year_0 = new Date("Jun 11 2019 17:55:00 GMT").getTime() || 1.5602757e12;
 
 let constants = {
 	// Not using the API as its not updated
+	// [May/24] Fair it hardcoded anyways
 	events: [
 		{
 			key: "spookyFestival",

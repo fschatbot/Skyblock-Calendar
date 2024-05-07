@@ -1,39 +1,5 @@
-.mainContainer {
-	background: var(--bg);
-	@apply bg-cover bg-no-repeat bg-fixed pt-[140px] bg-center;
-}
-
-.Nav {
-	@apply fixed z-50 left-1/2 -translate-x-1/2 top-5
-	rounded-xl overflow-hidden
-	flex flex-col;
-}
-
-.Nav .time {
-	@apply py-4 px-8 bg-rose-500/80 backdrop-blur-sm
-	text-sm sm:text-lg md:text-2xl text-white text-center font-minecraft;
-}
-
-.currEvents {
-	@apply gap-1 flex flex-row items-center justify-center w-full
-	bg-white/80 px-2 py-1 rounded-b-xl;
-}
-
-.chip {
-	@apply px-4 py-[2px] rounded-3xl bg-blue-600/80 text-white font-medium
-	text-center
-	text-sm sm:text-base;
-}
-
-.actionBar {
-	@apply fixed bottom-6 right-6 z-50
-	flex flex-col gap-4;
-}
-
-.actionBar .actionItem {
-	@apply rounded-xl cursor-pointer text-blue-600 p-3
-	bg-white/60 backdrop-blur-3xl;
-}
+/* OMG what am I even looking at */
+/* Please read: https://adamwathan.me/css-utility-classes-and-separation-of-concerns/ */
 
 .mayorDisplay {
 	@apply !p-2;
@@ -43,7 +9,7 @@
 }
 
 .mayorToolTip span {
-	@apply text-sm font-minecraft;
+	@apply text-sm font-mc;
 }
 
 .react-tooltip {
@@ -61,7 +27,7 @@
 }
 
 .loading {
-	@apply text-4xl font-minecraft h-screen
+	@apply text-4xl font-mc h-screen
 	flex justify-center items-center;
 }
 
@@ -78,7 +44,7 @@
 }
 
 .ConfigMenu h1 {
-	@apply text-3xl font-minecraft mb-4;
+	@apply text-3xl font-mc mb-4;
 }
 
 .ConfigMenu .Options {
@@ -90,7 +56,7 @@
 }
 
 .ConfigMenu .Options .Option h2 {
-	@apply text-xl font-minecraft mx-auto mb-1;
+	@apply text-xl font-mc mx-auto mb-1;
 }
 
 .ConfigMenu .Options .Option .listItem {

@@ -74,15 +74,15 @@ function App() {
 
 	return (
 		<AppContext.Provider value={{ skyDate, currDay, configActive, setConfigActive, config, setConfig: changeConfig }}>
-			<div style={{ "--bg": `url(${images[randomImage]})` }} className="mainContainer">
+			{/* WHAT? */}
+			<div style={{ backgroundImage: `url(${images[randomImage]})` }} className="bg-cover bg-no-repeat bg-fixed pt-[140px] bg-center">
 				{configActive && ConfigMenuMemo}
 				{actionBarMemo}
-				<h1 className="Nav">
-					<span className="time">Time: {TimeString}</span>
-
-					<div className="currEvents">
+				<h1 className="fixed z-50 left-1/2 -translate-x-1/2 top-5 rounded-xl overflow-hidden flex flex-col">
+					<span className="py-4 px-8 bg-rose-500/80 backdrop-blur-sm text-sm sm:text-lg md:text-2xl text-white text-center font-minecraft">Time: {TimeString}</span>
+					<div className="gap-1 flex flex-row items-center justify-center w-full bg-white/80 px-2 py-1 rounded-b-xl">
 						{calcEvents({ day: skyDate.day - 1, month: skyDate.month - 1, year: skyDate.year }).map((event) => (
-							<div className="chip" key={event.key}>
+							<div className="px-4 py-[2px] rounded-3xl bg-blue-600/80 text-white font-medium text-center text-sm sm:text-base" key={event.key}>
 								{event.name}
 							</div>
 						))}
@@ -182,7 +182,7 @@ function JumpDay() {
 	const { currDay } = useContext(AppContext);
 
 	return (
-		<div className="jumpDay actionItem" onClick={() => currDay.current?.scrollIntoView({ behavior: "smooth", block: "center" })}>
+		<div className="rounded-xl cursor-pointer text-blue-600 p-3 bg-white/60 backdrop-blur-3xl jumpDay" onClick={() => currDay.current?.scrollIntoView({ behavior: "smooth", block: "center" })}>
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
 				<path
 					strokeLinecap="round"
@@ -211,7 +211,7 @@ function DisplayMayor() {
 
 	return (
 		<>
-			<div className="mayorDisplay actionItem">
+			<div className="rounded-xl cursor-pointer text-blue-600 p-3 bg-white/60 backdrop-blur-3xl mayorDisplay">
 				<img src={`https://mc-heads.net/avatar/${MayorSkins[constants.mayor.name]}`} alt={constants.mayor.name} />
 			</div>
 			<Tooltip anchorSelect=".mayorDisplay" place="top" className="mayorToolTip">
@@ -232,7 +232,7 @@ function Options() {
 	const { setConfigActive } = useContext(AppContext);
 
 	return (
-		<div className="optionDisplay actionItem" onClick={() => setConfigActive(true)}>
+		<div className="rounded-xl cursor-pointer text-blue-600 p-3 bg-white/60 backdrop-blur-3xl" onClick={() => setConfigActive(true)}>
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
 				<path
 					strokeLinecap="round"
@@ -246,7 +246,7 @@ function Options() {
 
 function ActionBar() {
 	return (
-		<div className="actionBar">
+		<div className="fixed bottom-6 right-6 z-50 flex flex-col gap-4">
 			<Options />
 			<DisplayMayor />
 			<JumpDay />
