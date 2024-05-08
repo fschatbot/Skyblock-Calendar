@@ -1,17 +1,3 @@
-/* OMG what am I even looking at */
-/* Please read: https://adamwathan.me/css-utility-classes-and-separation-of-concerns/ */
-
-.mayorDisplay {
-	@apply !p-2;
-}
-.mayorDisplay img {
-	@apply w-10 h-10 rounded-lg;
-}
-
-.mayorToolTip span {
-	@apply text-sm font-mc;
-}
-
 .react-tooltip {
 	@apply z-40 max-w-xs !rounded-xl;
 }

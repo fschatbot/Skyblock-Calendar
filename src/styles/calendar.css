@@ -9,22 +9,3 @@
 .month > h1 {
 	@apply text-4xl mb-5 font-medium text-white font-mc;
 }
-
-.days {
-	@apply grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 gap-4;
-}
-
-.day {
-	@apply w-44 h-44 md:w-52 md:h-52 shadow-lg rounded-md overflow-hidden backdrop-blur-sm bg-white/20
-	flex flex-col relative;
-
-	@apply before:content-[''] before:absolute before:h-full before:w-[var(--width)] before:bg-black/20 before:transition-[width];
-}
-
-.day > h1 {
-	@apply bg-blue-500 text-white text-center font-bold py-2;
-}
-
-.day.active > h1 {
-	@apply bg-emerald-500;
-}

@@ -4,8 +4,9 @@
 
 /* You are meant to put custom classes here */
 @layer utilities {
-	.aClass{ 
-		background-color: red;
+	.custom-scroll {
+		scrollbar-width: thin;
+		scrollbar-color: #4b5563 transparent;
 	}
 }
 

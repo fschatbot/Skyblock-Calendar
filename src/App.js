@@ -49,10 +49,10 @@ function App() {
 	// Simply sets the skyDate to calcDay() every 100ms
 	useEffect(() => {
 		currDay.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-
+		// OMG - This is refreshing each continent and subcontinent every 100ms second, needs to be completely reworked
 		const interval = setInterval(() => {
 			setSkyDate(calcDay());
-		}, 100);
+		}, 1000);
 		return () => clearInterval(interval);
 	}, []);
 
@@ -97,7 +97,7 @@ function App() {
 						FSChatBot
 					</a>
 				</span>
-				<Tooltip anchorSelect=".day" />
+				<Tooltip anchorSelect=".day-anchor-element" />
 			</div>
 		</AppContext.Provider>
 	);
@@ -111,7 +111,7 @@ function Month({ month, year }) {
 		<div className={"month" + (active.month - 1 === month ? " active" : "")}>
 			<h1>{monthName}</h1>
 
-			<div className="days">
+			<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 gap-4">
 				{Array(constants.DAYS_IN_MONTH)
 					.fill(0)
 					.map((_, i) => (
@@ -136,10 +136,11 @@ function Day({ day, month, year }) {
 	useEffect(() => {
 		if (isActive) {
 			activeDayRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+			// Again - this is a bad way to do this, needs to be reworked
 			let interval = setInterval(() => {
 				const { hour, minute } = calcDay();
 				setWidth((hour * 60 + minute) / (60 * 24));
-			}, 100);
+			}, 1000);
 			return () => clearInterval(interval);
 		}
 	}, [isActive, activeDayRef]);
@@ -159,17 +160,18 @@ function Day({ day, month, year }) {
 	}
 
 	return (
-		<div className={"day" + (isActive ? " active" : "")} style={{ "--width": `${width * 100}%` }} {...props} data-tooltip-html={ToolTip} onMouseOver={() => setToolTip(calcDistance())}>
-			<h1>
+		<div className={"day-anchor-element aw-44 h-44 md:w-52 md:h-52 shadow-lg rounded-md overflow-hidden backdrop-blur-sm bg-white/20 flex flex-col relative"} {...props} data-tooltip-html={ToolTip} onMouseOver={() => setToolTip(calcDistance())}>
+			<h1 className={`${isActive ? "bg-emerald-500" : "bg-blue-500"} relative text-white text-center font-bold py-2`}>
+				{isActive ? <span style={{ right: `${(1-width)*100}%` }} className="absolute bg-black opacity-20 transition-[right] duration-1000 inset-0"></span> : null}
 				{day + 1}
 				{(day + 1).rank()}
 			</h1>
-			<div className={"events" + empty}>
+			<div className={"custom-scroll flex items-center flex-grow flex-col gap-2 p-1 overflow-y-auto" + empty}>
 				{events.length === 0 && <h2>No Events</h2>}
 				{events.length !== 0 &&
 					events.map((event) => (
-						<h2 key={event.key} className={event.key}>
-							{event.icon && <img src={event.icon} alt={event.name} />}
+						<h2 key={event.key} className={`${event.key} w-full bg-slate-500 rounded-sm px-1 text-xs font-medium text-white flex flex-row items-center gap-1`}>
+							{event.icon && <img className="h-7 w-7 m-0.5" src={event.icon} alt={event.name} />}
 							{event.name}
 						</h2>
 					))}
@@ -211,15 +213,15 @@ function DisplayMayor() {
 
 	return (
 		<>
-			<div className="rounded-xl cursor-pointer text-blue-600 p-3 bg-white/60 backdrop-blur-3xl mayorDisplay">
-				<img src={`https://mc-heads.net/avatar/${MayorSkins[constants.mayor.name]}`} alt={constants.mayor.name} />
+			<div className="rounded-xl cursor-pointer text-blue-600 p-2 bg-white/60 backdrop-blur-3xl mayor-anchor-element">
+				<img className="w-10 h-10 rounded-lg" src={`https://mc-heads.net/avatar/${MayorSkins[constants.mayor.name]}`} alt={constants.mayor.name} />
 			</div>
-			<Tooltip anchorSelect=".mayorDisplay" place="top" className="mayorToolTip">
+			<Tooltip anchorSelect=".mayor-anchor-element" place="top" className="mayorToolTip">
 				{constants.mayor.perks.map((perk) => {
 					return (
 						<div key={perk.name}>
 							<h1>{perk.name}</h1>
-							{parse(render(perk.description))}
+							<div className="text-sm">{parse(render(perk.description))}</div>							
 						</div>
 					);
 				})}
