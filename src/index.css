@@ -12,10 +12,10 @@
 
 @font-face {
 	font-family: "mc";
-	src: url("./fonts/mc.woff") format("woff");
+	src: url("./assets/fonts/mc.woff") format("woff");
 }
 
 @font-face {
 	font-family: "mc-smooth";
-	src: url("./fonts/mc-smooth.woff") format("woff");
+	src: url("./assets/fonts/mc-smooth.woff") format("woff");
 }

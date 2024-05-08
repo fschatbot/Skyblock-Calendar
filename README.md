@@ -1,61 +1,8 @@
-<div align="center">
+# React + Vite
 
-# SBCalendar
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-![Create React App](https://img.shields.io/badge/Create_React_App-09D3AC?logo=createreactapp&style=for-the-badge&logoColor=white)
-![Tailwind](https://img.shields.io/badge/Tailwind_CSS-06B6D4?logo=TailwindCSS&style=for-the-badge&logoColor=white)
+Currently, two official plugins are available:
 
-</div>
-
-The best hypixel skyblock calendar on the web. It caters to every SINGLE event that takes place in the game. All of this plus a beautiful UI and a lot of features. This calendar even caters to mayor based events, timed events (dark auction, jerry's workshop, etc) and fixed events. Ensure that you don't miss out on any event by using this calendar. So save in your bookmark and share it with others if you have to!
-
-[CHECK OUT THE WEBSITE!!](https://fschatbot.github.io/Skyblock-Calendar/)
-
-# How to Run
-
-If you are going to be reuploading it then please give permission!
-
-```
-npm clean-install
-npm run build
-serve -s build
-```
-
-# Credits
-
-## Code
-
-- https://skyblock-api.matdoes.dev/ (For Head Skins)
-- https://hypixel.inventivetalent.org/
-- https://skyblock-npcs.matdoes.dev/
-- Enis for the font: [Enis#5902](http://discordapp.com/users/999059797796204594) & [planetminecraft](https://www.planetminecraft.com/member/ensis/)
-
-## Reference
-
-- [Hypixel Fandom](https://hypixel-skyblock.fandom.com/wiki/Hypixel_SkyBlock_Wiki)
-- [Hypixel Wiki](https://wiki.hypixel.net/)
-- https://ugly-guy.github.io/calendar/
-
-## TODO
-
-- [x] Add Icons
-- [x] Add screenshots as backgrounds
-  - https://hypixel.net/threads/skyblock-cinematic-screenshots.3411421/
-- [x] Add a bar for the amount of day that has passed
-- [x] Add more timers
-- [x] Add tooltip on hover for time left for the day to arrive
-- [ ] Update the metadata of the index.html
-- [x] Make the [Readme](README.md) more beautiful
-- [ ] Make Credit Footer
-- [ ] Mayor Based Events
-  - [x] Mining Fiesta
-  - [x] Fishing Festival
-  - [ ] Foxy
-  - [ ] Jerry
-- [ ] Make events viewing toggleable
-- [ ] Add Notifications
-- [ ] Make an animated favicon (match with the skyblock time)
-- [x] Change the minecraft font to this: https://postimg.cc/RNKK57RG by Ensis#5902
-- [ ] Fetchur reset event (with request icon and count)
-- [ ] Daily Commission reset event
-- [ ] NPC daily buy reset event
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh

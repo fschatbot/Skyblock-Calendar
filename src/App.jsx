@@ -1,23 +1,22 @@
 import { useState, useEffect, useMemo, useRef, useContext } from "react";
-import "./styles/App.css";
-import "./styles/calendar.css";
-import "./styles/event.css";
-import "./styles/mcStyle.css";
-import "react-tooltip/dist/react-tooltip.css";
+import "./assets/styles/App.css";
+import "./assets/styles/calendar.css";
+import "./assets/styles/event.css";
+import "./assets/styles/mcStyle.css";
 import { Tooltip } from "react-tooltip";
-import { constants, calcDay, calcEvents, calendarFetch, formatMin, AppContext } from "./utils";
+import { constants, calcDay, calcEvents, calendarFetch, formatMin, AppContext } from "./assets/utils";
 import { render } from "minecraft-text";
 import parse from "html-react-parser";
 
 // Importing all the background images
-import image1 from "./backgrounds/bg1.png";
-import image2 from "./backgrounds/bg2.png";
-import image3 from "./backgrounds/bg3.png";
-import image4 from "./backgrounds/bg4.png";
-import image5 from "./backgrounds/bg5.png";
-import image6 from "./backgrounds/bg6.png";
-import image7 from "./backgrounds/bg7.png";
-import image8 from "./backgrounds/bg8.png";
+import image1 from "./assets/backgrounds/bg1.png";
+import image2 from "./assets/backgrounds/bg2.png";
+import image3 from "./assets/backgrounds/bg3.png";
+import image4 from "./assets/backgrounds/bg4.png";
+import image5 from "./assets/backgrounds/bg5.png";
+import image6 from "./assets/backgrounds/bg6.png";
+import image7 from "./assets/backgrounds/bg7.png";
+import image8 from "./assets/backgrounds/bg8.png";
 
 const images = [image1, image2, image3, image4, image5, image6, image7, image8];
 
