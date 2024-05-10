@@ -12,11 +12,6 @@
 	@apply block text-xs text-white/70 text-center italic;
 }
 
-.loading {
-	@apply text-4xl font-mc h-screen
-	flex justify-center items-center;
-}
-
 /* Config Menu CSS */
 .ConfigContainer {
 	@apply fixed inset-0 z-[60] bg-white/30

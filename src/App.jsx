@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef, useContext } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import "./assets/styles/App.css";
 import "./assets/styles/calendar.css";
 import "./assets/styles/event.css";
@@ -20,65 +20,68 @@ import image8 from "./assets/backgrounds/bg8.png";
 
 const images = [image1, image2, image3, image4, image5, image6, image7, image8];
 
-function TopLevelLoader() {
-	// This function is used to load the calendar data before rendering the app
-	const [loading, setLoading] = useState(true);
-	calendarFetch.then(() => setLoading(false));
-
-	if (loading) return <h1 className="loading">Loading...</h1>;
-	return <App />;
-}
-
 function App() {
-	const [skyDate, setSkyDate] = useState({});
+	const [loading, setLoading] = useState(true);
+	const [fetchSuccess, setFetchSuccess] = useState(false);
+	const [skyDate, setSkyDate] = useState(null);
 	const [configActive, setConfigActive] = useState(false);
-	const [randomImage] = useState(Math.floor(Math.random() * images.length));
-	const [config, setConfig] = useState(constants.eventConfig);
-	function changeConfig(key, value) {
+	const [config, setConfig] = useState(() => {
+		return localStorage.getItem("displayConfig") ? JSON.parse(localStorage.getItem("displayConfig")) : constants.eventConfig;
+	});
+	const [randomImage] = useState(() => Math.floor(Math.random() * images.length));
+
+	useEffect(() => {
+		// console.log('Component mounted');
+		async function fetchData() {
+			const success = await calendarFetch();
+			if (success) {
+				setSkyDate(calcDay());
+				setFetchSuccess(true);
+			}
+			setLoading(false);
+		}
+
+		fetchData();
+		// return () => console.log('Component unmounted');
+	}, []); // Empty array ensures this effect runs only once
+
+	// console.log('Component rendered');
+
+	useEffect(() => {
+		let interval;
+		if (skyDate) {
+			interval = setInterval(() => {
+				setSkyDate(calcDay());
+			}, 1000);
+		}
+		return () => clearInterval(interval);
+	}, [skyDate]);
+
+	if (loading) {
+		return <h1 className="flex justify-center items-center text-4xl h-screen">Loading...</h1>;
+	} else if (!fetchSuccess) {
+		return <h1 className="flex justify-center items-center text-4xl h-screen">Failed to fetch API data</h1>;
+	}
+
+	const timeString = skyDate ? `${skyDate.hour.toString().padStart(2, '0')}:${skyDate.minute.toString().padStart(2, '0')}${skyDate.hour >= 12 ? 'pm' : 'am'} ${skyDate.day}/${skyDate.month}/${skyDate.year} ${skyDate.monthName?.replace("_", " ")?.title()}` : 'Loading...';
+
+	const changeConfig = (key, value) => {
 		setConfig((prevConfig) => {
 			const newConfig = { ...prevConfig, [key]: value };
 			localStorage.setItem("displayConfig", JSON.stringify(newConfig));
 			constants.eventConfig = newConfig;
 			return newConfig;
 		});
-	}
-
-	const currDay = useRef();
-
-	// Simply sets the skyDate to calcDay() every 100ms
-	useEffect(() => {
-		currDay.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-		// OMG - This is refreshing each continent and subcontinent every 100ms second, needs to be completely reworked
-		const interval = setInterval(() => {
-			setSkyDate(calcDay());
-		}, 1000);
-		return () => clearInterval(interval);
-	}, []);
-
-	let { hour, minute, day, month, year } = skyDate;
-	const isPM = hour >= 12;
-	hour = String(hour % 12).padStart(2, "0");
-	minute = String(minute).padStart(2, "0");
-
-	const TimeString = `${hour}:${minute}${isPM ? "pm" : "am"} ${day}/${month}/${year} ${skyDate.monthName?.replace("_", " ")?.title()}`;
-	const months = useMemo(
-		() =>
-			Array(constants.MONTHS_IN_YEAR)
-				.fill(0)
-				.map((_, i) => <Month month={i} year={year} key={i} />),
-		[month, day, year] // eslint-disable-line
-	);
-	const actionBarMemo = useMemo(() => <ActionBar />, []);
-	const ConfigMenuMemo = useMemo(() => <ConfigMenu />, []);
+		
+	};
 
 	return (
-		<AppContext.Provider value={{ skyDate, currDay, configActive, setConfigActive, config, setConfig: changeConfig }}>
-			{/* WHAT? */}
+		<AppContext.Provider value={{ skyDate, configActive, setConfigActive, config, setConfig: changeConfig }}>
 			<div style={{ backgroundImage: `url(${images[randomImage]})` }} className="bg-cover bg-no-repeat bg-fixed pt-[140px] bg-center">
-				{configActive && ConfigMenuMemo}
-				{actionBarMemo}
+				{configActive && <ConfigMenu />}
+				<ActionBar />
 				<h1 className="fixed z-50 left-1/2 -translate-x-1/2 top-5 rounded-xl overflow-hidden flex flex-col">
-					<span className="py-4 px-8 bg-rose-500/80 backdrop-blur-sm text-sm sm:text-lg md:text-2xl text-white text-center font-minecraft">Time: {TimeString}</span>
+					<span className="py-4 px-8 bg-rose-500/80 backdrop-blur-sm text-sm sm:text-lg md:text-2xl text-white text-center font-minecraft">Time: {timeString}</span>
 					<div className="gap-1 flex flex-row items-center justify-center w-full bg-white/80 px-2 py-1 rounded-b-xl">
 						{calcEvents({ day: skyDate.day - 1, month: skyDate.month - 1, year: skyDate.year }).map((event) => (
 							<div className="px-4 py-[2px] rounded-3xl bg-blue-600/80 text-white font-medium text-center text-sm sm:text-base" key={event.key}>
@@ -87,9 +90,7 @@ function App() {
 						))}
 					</div>
 				</h1>
-
-				{months}
-
+				<MonthsDisplay />
 				<span className="credits">
 					Made by
 					<a href="https://github.com/fschatbot" target="_blank" rel="noreferrer">
@@ -102,49 +103,71 @@ function App() {
 	);
 }
 
-function Month({ month, year }) {
-	const monthName = constants.MONTHS[month + 1].replace("_", " ").title();
-	const { skyDate: active } = useContext(AppContext);
+const MonthsDisplay = React.memo(() => {
+	useEffect(() => {
+		activeScroll('fast');
+	}, []);
 
 	return (
-		<div className={"month" + (active.month - 1 === month ? " active" : "")}>
-			<h1>{monthName}</h1>
+		<>
+			{Array(constants.MONTHS_IN_YEAR).fill().map((_, i) => <Month month={i} key={i} />)}
+		</>
+	);
+});
 
+function Month({ month }) {
+	const monthName = useMemo(() => constants.MONTHS[month + 1].replace("_", " ").title(), [month]);
+	return (
+		<div className="month">
+			<h1>{monthName}</h1>
 			<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 gap-4">
-				{Array(constants.DAYS_IN_MONTH)
-					.fill(0)
-					.map((_, i) => (
-						<Day day={i} month={month} year={year} key={`${month}-${i}`} />
-					))}
+				<Days month={month} />
 			</div>
 		</div>
 	);
 }
 
-const DateFormatter = new Intl.DateTimeFormat("en-GB", { timeStyle: "short", dateStyle: "short", hour12: true });
+const Days = React.memo(({ month }) => {
+	return (
+		<>
+			{Array(constants.DAYS_IN_MONTH).fill().map((_, i) => <Day day={i} month={month} key={`${month}-${i}`} />)}
+		</>
+	);
+});
 
-function Day({ day, month, year }) {
+const DateFormatter = new Intl.DateTimeFormat('en-GB', {
+	timeStyle: 'short',
+	dateStyle: 'short',
+	hour12: true
+});
+
+const Day = React.memo(({ day, month }) => {
+	const { skyDate } = useContext(AppContext);
+
+	const year = skyDate.year;
 	const events = calcEvents({ day, month, year });
 	const empty = events.length === 0 ? " empty" : "";
-	const { currDay: activeDayRef, skyDate: active } = useContext(AppContext);
-	const isActive = active.day - 1 === day && active.month - 1 === month;
+	const isActive = skyDate?.day - 1 === day && skyDate?.month - 1 === month;
+
 	const [width, setWidth] = useState(0);
-	const props = isActive ? { ref: activeDayRef } : {};
 	const [ToolTip, setToolTip] = useState("");
 
-	useEffect(() => {
-		if (isActive) {
-			activeDayRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-			// Again - this is a bad way to do this, needs to be reworked
-			let interval = setInterval(() => {
-				const { hour, minute } = calcDay();
-				setWidth((hour * 60 + minute) / (60 * 24));
-			}, 1000);
-			return () => clearInterval(interval);
-		}
-	}, [isActive, activeDayRef]);
+	console.log("Day:", day, "Month:", month, "Year:", year);
+
+	// useEffect(() => {
+	// 	if (isActive) {
+	// 		let interval = setInterval(() => {
+	// 			const { hour, minute } = calcDay();
+	// 			setWidth((hour * 60 + minute) / (60 * 24));
+	// 		}, 1000);
+	// 		return () => clearInterval(interval);
+	// 	}
+	// }, [isActive]);
 
 	function calcDistance() {
+		// Need to optime so it is not called on mouse movement.
+		console.log("Year:", year, "Month:", month, "Day:", day);
+
 		// Calculating the Date instance when the day started
 		const totalDays = (year - 1) * constants.DAYS_IN_YEAR + month * constants.DAYS_IN_MONTH + day;
 		const timePassed = totalDays * constants.SECONDS_PER_DAY * 1000;
@@ -159,8 +182,8 @@ function Day({ day, month, year }) {
 	}
 
 	return (
-		<div className={"day-anchor-element aw-44 h-44 md:w-52 md:h-52 shadow-lg rounded-md overflow-hidden backdrop-blur-sm bg-white/20 flex flex-col relative"} {...props} data-tooltip-html={ToolTip} onMouseOver={() => setToolTip(calcDistance())}>
-			<h1 className={`${isActive ? "bg-emerald-500" : "bg-blue-500"} relative text-white text-center font-bold py-2`}>
+		<div className={"day-anchor-element aw-44 h-44 md:w-52 md:h-52 shadow-lg rounded-md overflow-hidden backdrop-blur-sm bg-white/20 flex flex-col relative"} data-tooltip-html={ToolTip} onMouseOver={() => setToolTip(calcDistance())}>
+			<h1 data-active={`${isActive ? 'true' : 'false'}`} className={`${isActive ? "bg-emerald-500" : "bg-blue-500"} relative text-white text-center font-bold py-2`}>
 				{isActive ? <span style={{ right: `${(1-width)*100}%` }} className="absolute bg-black opacity-20 transition-[right] duration-1000 inset-0"></span> : null}
 				{day + 1}
 				{(day + 1).rank()}
@@ -177,19 +200,36 @@ function Day({ day, month, year }) {
 			</div>
 		</div>
 	);
+});
+
+function Github() {
+	return (
+		<div className="rounded-xl cursor-pointer text-blue-500 hover:text-blue-600 p-3 bg-white/60 backdrop-blur-3xl">
+			<a href="https://github.com/fschatbot/Skyblock-Calendar">
+				<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+						<path fillRule="evenodd" d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z" clipRule="evenodd"/>
+				</svg>
+			</a>
+		</div>
+	);
 }
 
-function JumpDay() {
-	const { currDay } = useContext(AppContext);
+function activeScroll(type) {
+	if (type === "fast") {
+		type = "instant";
+	} else { 
+		type = "smooth";
+	}
 
+  const activeElement = document.querySelector('[data-active="true"]');
+  activeElement?.scrollIntoView({ behavior: type, block: "center" });
+}
+
+function Goto() {
 	return (
-		<div className="rounded-xl cursor-pointer text-blue-600 p-3 bg-white/60 backdrop-blur-3xl jumpDay" onClick={() => currDay.current?.scrollIntoView({ behavior: "smooth", block: "center" })}>
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
-				<path
-					strokeLinecap="round"
-					strokeLinejoin="round"
-					d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
-				/>
+		<div onClick={activeScroll} className="rounded-xl cursor-pointer text-blue-500 hover:text-blue-600 p-3 bg-white/60 backdrop-blur-3xl jumpDay">
+			<svg fill="currentColor" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+				<g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><title></title><path d="M114,74.5a19.92,19.92,0,0,0-28.5,0L57,103a9.9,9.9,0,0,0,14,14L99.5,88.5,128,117a9.9,9.9,0,0,0,14-14Z"></path><path d="M100,15a85,85,0,1,0,85,85A84.93,84.93,0,0,0,100,15Zm0,150a65,65,0,1,1,65-65A64.87,64.87,0,0,1,100,165Z"></path></g>
 			</svg>
 		</div>
 	);
@@ -233,7 +273,7 @@ function Options() {
 	const { setConfigActive } = useContext(AppContext);
 
 	return (
-		<div className="rounded-xl cursor-pointer text-blue-600 p-3 bg-white/60 backdrop-blur-3xl" onClick={() => setConfigActive(true)}>
+		<button className="rounded-xl cursor-pointer text-blue-500 hover:text-blue-600 p-3 bg-white/60 backdrop-blur-3xl" onClick={() => setConfigActive(true)}>
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
 				<path
 					strokeLinecap="round"
@@ -241,16 +281,17 @@ function Options() {
 					d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"
 				/>
 			</svg>
-		</div>
+		</button>
 	);
 }
 
 function ActionBar() {
 	return (
-		<div className="fixed bottom-6 right-6 z-50 flex flex-col gap-4">
+		<div className="fixed bottom-6 right-6 z-50 flex flex-col gap-y-2">
 			<Options />
 			<DisplayMayor />
-			<JumpDay />
+			<Github />
+			<Goto />
 		</div>
 	);
 }
@@ -310,4 +351,3 @@ function ConfigMenu() {
 }
 
 export default App;
-export { TopLevelLoader };
