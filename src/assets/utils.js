@@ -95,13 +95,13 @@ async function calendarFetch () {
 		await fetch("https://hypixel-api.inventivetalent.org/api/skyblock/calendar")
 		.then((res) => res.json())
 		.then((data) => {
-			console.log("Calendar Data loaded: ", data);
+			// console.log("Calendar Data loaded: ", data);
 			constants = { ...constants, ...data.real, ...data.ingame, MONTHS: data.months };
 		})
 		.then(() => fetch("https://api.hypixel.net/resources/skyblock/election"))
 		.then((res) => res.json())
 		.then((data) => {
-			console.log("Mayor Data loaded: ", data);
+			// console.log("Mayor Data loaded: ", data);
 			constants.mayor = data.mayor;
 		})
 		return true;
@@ -113,8 +113,9 @@ async function calendarFetch () {
 
 function calcDay() {
 	if (!constants.MONTHS) {
-    console.error("Months data is not loaded yet!");
-		console.log('Constants Data:', constants)
+    console.log("Months data not loaded");
+    // console.error("Months data is not loaded yet!");
+		console.log('Constants Data:', constants);
     return null;
 	}
 
@@ -136,9 +137,9 @@ function calcDay() {
 	const [minute, remainer5] = [Math.floor(remainer4 / minuteDivider), remainer4 % minuteDivider];
 
 	const secondDivider = 1000;
-	const second = Math.floor(remainer5 / secondDivider);
+	const seconds = Math.floor(remainer5 / secondDivider);
 
-	return { year: year + 1, month: month + 1, day: day + 1, monthName: constants.MONTHS[month + 1], hour, minute, second };
+	return { year: year + 1, month: month + 1, day: day + 1, monthName: constants.MONTHS[month + 1], hour, minute, seconds };
 }
 
 function calcEvents({ day, month, year }) {

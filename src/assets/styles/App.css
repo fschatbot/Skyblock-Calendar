@@ -50,12 +50,3 @@
 	hover:bg-white/30 hover:border-white/30
 	flex justify-center items-center;
 }
-
-.credits {
-	@apply text-white flex justify-center items-center flex-row gap-1
-	mt-5 text-lg;
-}
-
-.credits a {
-	@apply font-bold underline;
-}

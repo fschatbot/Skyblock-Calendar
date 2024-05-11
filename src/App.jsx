@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useContext } from "react";
+import React, { useState, useEffect, useCallback, useMemo, useContext, createContext } from "react";
 import "./assets/styles/App.css";
 import "./assets/styles/calendar.css";
 import "./assets/styles/event.css";
@@ -20,154 +20,28 @@ import image8 from "./assets/backgrounds/bg8.png";
 
 const images = [image1, image2, image3, image4, image5, image6, image7, image8];
 
+const MyContext = createContext();
+
 function App() {
 	const [loading, setLoading] = useState(true);
 	const [fetchSuccess, setFetchSuccess] = useState(false);
-	const [skyDate, setSkyDate] = useState(null);
+
+	const [sbClock, setSbClock] = useState({ seconds: 0, minute: 0, hour: 0 });
+
+	const [sbDay, setSbDay] = useState(0);
+	const [sbMonth, setSbMonth] = useState(0);
+	const [sbYear, setSbYear] = useState(0);
+	const [sbMonthName, setSbMonthName] = useState('Loading...');
+
+	const [tooltipMessage, setTooltipMessage] = useState(['Loading...', 'Loading...']);
+
 	const [configActive, setConfigActive] = useState(false);
 	const [config, setConfig] = useState(() => {
 		return localStorage.getItem("displayConfig") ? JSON.parse(localStorage.getItem("displayConfig")) : constants.eventConfig;
 	});
 	const [randomImage] = useState(() => Math.floor(Math.random() * images.length));
 
-	useEffect(() => {
-		// console.log('Component mounted');
-		async function fetchData() {
-			const success = await calendarFetch();
-			if (success) {
-				setSkyDate(calcDay());
-				setFetchSuccess(true);
-			}
-			setLoading(false);
-		}
-
-		fetchData();
-		// return () => console.log('Component unmounted');
-	}, []); // Empty array ensures this effect runs only once
-
-	// console.log('Component rendered');
-
-	useEffect(() => {
-		let interval;
-		if (skyDate) {
-			interval = setInterval(() => {
-				setSkyDate(calcDay());
-			}, 1000);
-		}
-		return () => clearInterval(interval);
-	}, [skyDate]);
-
-	if (loading) {
-		return <h1 className="flex justify-center items-center text-4xl h-screen">Loading...</h1>;
-	} else if (!fetchSuccess) {
-		return <h1 className="flex justify-center items-center text-4xl h-screen">Failed to fetch API data</h1>;
-	}
-
-	const timeString = skyDate ? `${skyDate.hour.toString().padStart(2, '0')}:${skyDate.minute.toString().padStart(2, '0')}${skyDate.hour >= 12 ? 'pm' : 'am'} ${skyDate.day}/${skyDate.month}/${skyDate.year} ${skyDate.monthName?.replace("_", " ")?.title()}` : 'Loading...';
-
-	const changeConfig = (key, value) => {
-		setConfig((prevConfig) => {
-			const newConfig = { ...prevConfig, [key]: value };
-			localStorage.setItem("displayConfig", JSON.stringify(newConfig));
-			constants.eventConfig = newConfig;
-			return newConfig;
-		});
-		
-	};
-
-	return (
-		<AppContext.Provider value={{ skyDate, configActive, setConfigActive, config, setConfig: changeConfig }}>
-			<div style={{ backgroundImage: `url(${images[randomImage]})` }} className="bg-cover bg-no-repeat bg-fixed pt-[140px] bg-center">
-				{configActive && <ConfigMenu />}
-				<ActionBar />
-				<h1 className="fixed z-50 left-1/2 -translate-x-1/2 top-5 rounded-xl overflow-hidden flex flex-col">
-					<span className="py-4 px-8 bg-rose-500/80 backdrop-blur-sm text-sm sm:text-lg md:text-2xl text-white text-center font-minecraft">Time: {timeString}</span>
-					<div className="gap-1 flex flex-row items-center justify-center w-full bg-white/80 px-2 py-1 rounded-b-xl">
-						{calcEvents({ day: skyDate.day - 1, month: skyDate.month - 1, year: skyDate.year }).map((event) => (
-							<div className="px-4 py-[2px] rounded-3xl bg-blue-600/80 text-white font-medium text-center text-sm sm:text-base" key={event.key}>
-								{event.name}
-							</div>
-						))}
-					</div>
-				</h1>
-				<MonthsDisplay />
-				<span className="credits">
-					Made by
-					<a href="https://github.com/fschatbot" target="_blank" rel="noreferrer">
-						FSChatBot
-					</a>
-				</span>
-				<Tooltip anchorSelect=".day-anchor-element" />
-			</div>
-		</AppContext.Provider>
-	);
-}
-
-const MonthsDisplay = React.memo(() => {
-	useEffect(() => {
-		activeScroll('fast');
-	}, []);
-
-	return (
-		<>
-			{Array(constants.MONTHS_IN_YEAR).fill().map((_, i) => <Month month={i} key={i} />)}
-		</>
-	);
-});
-
-function Month({ month }) {
-	const monthName = useMemo(() => constants.MONTHS[month + 1].replace("_", " ").title(), [month]);
-	return (
-		<div className="month">
-			<h1>{monthName}</h1>
-			<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 gap-4">
-				<Days month={month} />
-			</div>
-		</div>
-	);
-}
-
-const Days = React.memo(({ month }) => {
-	return (
-		<>
-			{Array(constants.DAYS_IN_MONTH).fill().map((_, i) => <Day day={i} month={month} key={`${month}-${i}`} />)}
-		</>
-	);
-});
-
-const DateFormatter = new Intl.DateTimeFormat('en-GB', {
-	timeStyle: 'short',
-	dateStyle: 'short',
-	hour12: true
-});
-
-const Day = React.memo(({ day, month }) => {
-	const { skyDate } = useContext(AppContext);
-
-	const year = skyDate.year;
-	const events = calcEvents({ day, month, year });
-	const empty = events.length === 0 ? " empty" : "";
-	const isActive = skyDate?.day - 1 === day && skyDate?.month - 1 === month;
-
-	const [width, setWidth] = useState(0);
-	const [ToolTip, setToolTip] = useState("");
-
-	console.log("Day:", day, "Month:", month, "Year:", year);
-
-	// useEffect(() => {
-	// 	if (isActive) {
-	// 		let interval = setInterval(() => {
-	// 			const { hour, minute } = calcDay();
-	// 			setWidth((hour * 60 + minute) / (60 * 24));
-	// 		}, 1000);
-	// 		return () => clearInterval(interval);
-	// 	}
-	// }, [isActive]);
-
-	function calcDistance() {
-		// Need to optime so it is not called on mouse movement.
-		console.log("Year:", year, "Month:", month, "Day:", day);
-
+	const handleMouseOverDay = useCallback((day, month, year) => {
 		// Calculating the Date instance when the day started
 		const totalDays = (year - 1) * constants.DAYS_IN_YEAR + month * constants.DAYS_IN_MONTH + day;
 		const timePassed = totalDays * constants.SECONDS_PER_DAY * 1000;
@@ -176,15 +50,185 @@ const Day = React.memo(({ day, month }) => {
 		// Calculating the difference in now V/S dayDate in minutes
 		const diff = dayDate - Date.now();
 		const diffMin = diff / 1000 / 60;
-		if (diffMin < -constants.MINUTES_PER_DAY) return `Day ended ${formatMin(Math.floor(diffMin + constants.MINUTES_PER_DAY))} ago`;
-		if (-constants.MINUTES_PER_DAY <= diffMin && diffMin <= 0) return `Day ACTIVE`;
-		return `Day starts in: ${formatMin(Math.floor(diffMin))}<label>${DateFormatter.format(dayDate)}</label>`;
+		let response;
+
+		if (diffMin < -constants.MINUTES_PER_DAY) {
+			response = [`Day ended ${formatMin(Math.floor(diffMin + constants.MINUTES_PER_DAY))} ago`, ''];
+		} else if (-constants.MINUTES_PER_DAY <= diffMin && diffMin <= 0) {
+			response = ['Day ACTIVE', ''];
+		} else {
+			response = [`Day starts in: ${formatMin(Math.floor(diffMin))}`, DateFormatter.format(dayDate)];
+		}
+
+		setTooltipMessage(response);
+	}, []);
+
+	const changeConfig = (key, value) => {
+		setConfig((prevConfig) => {
+			const newConfig = { ...prevConfig, [key]: value };
+			localStorage.setItem("displayConfig", JSON.stringify(newConfig));
+			constants.eventConfig = newConfig;
+			return newConfig;
+		});
+	};
+
+	const contextValue = useMemo(() => ({
+		handleMouseOverDay,
+		sbDay,
+		sbMonth,
+		sbYear,
+		configActive,
+		setConfigActive,
+		config,
+		setConfig: changeConfig
+	}), [handleMouseOverDay, sbDay, sbMonth, sbYear, configActive, config, changeConfig]);
+
+	const sbDateUpdate = () => {
+		const { day, month, year, monthName } = calcDay();
+		if (sbDay !== day) setSbDay(day);
+		if (sbMonth !== month) setSbMonth(month);
+		if (sbYear !== year) setSbYear(year);
+		if (sbMonthName !== monthName) setSbMonthName(monthName);
+	};
+
+	useEffect(() => {
+		async function fetchData() {
+			const success = await calendarFetch();
+			if (success) {
+				const { seconds, minute, hour } = calcDay();
+				setSbClock({ seconds, minute, hour });
+				sbDateUpdate();
+				setFetchSuccess(true);
+			}
+			setLoading(false);
+		}
+
+		fetchData();
+	}, []);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			const { seconds, minute, hour } = calcDay();
+			setSbClock({ seconds, minute, hour });
+		}, 1000);
+
+		return () => clearInterval(interval);
+	}, []);
+
+	useEffect(() => { // Can not reference sbDay directly in useEffect as it will not update the value because of JS closure.
+		let lastSbDay = sbDay;
+
+		const interval = setInterval(() => {
+			const { day } = calcDay();
+			if (day !== lastSbDay) sbDateUpdate();
+			lastSbDay = day;
+		}, 1000);
+
+		return () => clearInterval(interval);
+	}, []);
+
+	if (loading) {
+		return <h1 className="flex justify-center items-center text-4xl h-screen">Loading...</h1>;
+	} else if (!fetchSuccess) {
+		return <h1 className="flex justify-center items-center text-4xl h-screen">Failed to fetch API data</h1>;
 	}
 
 	return (
-		<div className={"day-anchor-element aw-44 h-44 md:w-52 md:h-52 shadow-lg rounded-md overflow-hidden backdrop-blur-sm bg-white/20 flex flex-col relative"} data-tooltip-html={ToolTip} onMouseOver={() => setToolTip(calcDistance())}>
+		<div style={{ backgroundImage: `url(${images[randomImage]})` }} className="bg-cover bg-no-repeat bg-fixed pt-[140px] bg-center">
+			<MyContext.Provider value={contextValue}>
+				{configActive && <ConfigMenu />}
+				<ActionBar />
+				<h1 className="fixed z-50 left-1/2 -translate-x-1/2 top-5 rounded-xl overflow-hidden flex flex-col">
+					<span className="py-4 px-8 bg-rose-500/80 backdrop-blur-sm text-sm sm:text-lg md:text-2xl text-white text-center font-minecraft">Time: {`${sbClock.hour.toString().padStart(2, '0')}:${sbClock.minute.toString().padStart(2, '0')}${sbClock.hour >= 12 ? 'pm' : 'am'}`} {`${sbDay}/${sbMonth}/${sbYear} ${sbMonthName.replace("_", " ")?.title()}`}</span>
+					<div className="gap-1 flex flex-row items-center justify-center w-full bg-white/80 px-2 py-1 rounded-b-xl">
+						{calcEvents({ day: sbDay - 1, month: sbMonth - 1, year: sbYear }).map((event) => (
+							<div className="px-4 py-[2px] rounded-3xl bg-blue-600/80 text-white font-medium text-center text-sm sm:text-base" key={event.key}>
+								{event.name}
+							</div>
+						))}
+					</div>
+				</h1>
+				<MonthsDisplay />
+				<span className="text-white flex justify-center items-center flex-row gap-1 mt-5 text-lg">
+					Made by
+					<a className="font-bold underline" href="https://github.com/fschatbot">FSChatBot</a>
+				</span>
+				<Tooltip anchorSelect=".day-anchor-element">
+					{tooltipMessage[0]}
+					<label>{tooltipMessage[1] ? tooltipMessage[1] : ''}</label>
+				</Tooltip>
+			</MyContext.Provider>
+		</div>
+	);
+}
+
+const MonthsDisplay = React.memo(() => {
+	// console.log("MonthsDisplay rendered");
+	const months = Array.from({ length: 12 }, (_, i) => i);
+
+	useEffect(() => {
+		activeScroll('fast');
+	}, []);
+
+	return (
+		<>
+			{months.map((month) => (
+				<Month month={month} key={month} />
+			))}
+		</>
+	);
+});
+
+function Month({ month }) {
+	// console.log("Month ", month, " rendered");
+	const days = Array.from({ length: constants.DAYS_IN_MONTH }, (_, i) => i);
+	const monthName = useMemo(() => constants.MONTHS[month + 1].replace("_", " ").title(), [month]);
+
+	return (
+		<div className="month">
+			<h1>{monthName}</h1>
+			<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 gap-4">
+				{days.map((day) => (
+					<Day key={day} day={day} month={month} />
+				))}
+			</div>
+		</div>
+	);
+}
+
+const DateFormatter = new Intl.DateTimeFormat('en-GB', {
+	timeStyle: 'short',
+	dateStyle: 'short',
+	hour12: true
+});
+
+const Day = React.memo(({ day, month }) => {
+	const { sbDay, sbMonth, sbYear, handleMouseOverDay } = useContext(MyContext);
+  const isActive = sbDay - 1 === day && sbMonth - 1 === month;
+	const year = sbYear;
+	const events = calcEvents({ day, month, year });
+	const empty = events.length === 0 ? " empty" : "";
+
+  let activeWidth = 0;
+
+  if (isActive) {
+    const [activeWidthState, setActiveWidthState] = useState(0);
+    activeWidth = activeWidthState;
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        const { hour, minute } = calcDay();
+        setActiveWidthState((hour * 60 + minute) / (60 * 24));
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }, []);
+  }
+
+	return (
+		<div onMouseOver={()=>{handleMouseOverDay(day, month, sbYear)}} className="day-anchor-element aw-44 h-44 md:w-52 md:h-52 shadow-lg rounded-md overflow-hidden backdrop-blur-sm bg-white/20 flex flex-col relative">
 			<h1 data-active={`${isActive ? 'true' : 'false'}`} className={`${isActive ? "bg-emerald-500" : "bg-blue-500"} relative text-white text-center font-bold py-2`}>
-				{isActive ? <span style={{ right: `${(1-width)*100}%` }} className="absolute bg-black opacity-20 transition-[right] duration-1000 inset-0"></span> : null}
+				{isActive ? <span style={{ right: `${(1-activeWidth)*100}%` }} className="absolute bg-black opacity-20 transition-[right] duration-1000 inset-0"></span> : null}
 				{day + 1}
 				{(day + 1).rank()}
 			</h1>
@@ -270,7 +314,7 @@ function DisplayMayor() {
 }
 
 function Options() {
-	const { setConfigActive } = useContext(AppContext);
+	const { setConfigActive } = useContext(MyContext);
 
 	return (
 		<button className="rounded-xl cursor-pointer text-blue-500 hover:text-blue-600 p-3 bg-white/60 backdrop-blur-3xl" onClick={() => setConfigActive(true)}>
@@ -297,7 +341,7 @@ function ActionBar() {
 }
 
 function ConfigMenu() {
-	const { config, setConfig, setConfigActive } = useContext(AppContext);
+	const { config, setConfig, setConfigActive } = useContext(MyContext);
 
 	function Item({ name, icon, enabled }) {
 		enabled = enabled ?? config[name] ?? true;
@@ -324,6 +368,7 @@ function ConfigMenu() {
 		);
 	}
 
+	// MAJOR ISSUE: Warning: React has detected a change in the order of Hooks called by App.
 	const eventListMemo = useMemo(EventList, [config]);
 
 	return (
