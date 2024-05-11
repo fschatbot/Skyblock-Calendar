@@ -1,9 +1,6 @@
-import { createContext } from "react";
-
 const year_0 = new Date("Jun 11 2019 17:55:00 GMT").getTime() || 1.5602757e12;
 
 let constants = {
-	// Not using the API as its not updated
 	events: [
 		{
 			key: "spookyFestival",
@@ -91,19 +88,35 @@ let constants = {
 	eventConfig: localStorage.getItem("displayConfig") ? JSON.parse(localStorage.getItem("displayConfig")) : {},
 };
 
-const calendarFetch = fetch("https://hypixel-api.inventivetalent.org/api/skyblock/calendar")
-	.then((res) => res.json())
-	.then((data) => {
-		constants = { ...constants, ...data.real, ...data.ingame, MONTHS: data.months };
-	})
-	.then(() => fetch("https://api.hypixel.net/resources/skyblock/election"))
-	.then((res) => res.json())
-	.then((data) => {
-		constants.mayor = data.mayor;
-	})
-	.finally(() => process.env.NODE_ENV === "development" && console.log((window.constants = constants)));
+async function calendarFetch () {
+	try {
+		await fetch("https://hypixel-api.inventivetalent.org/api/skyblock/calendar")
+		.then((res) => res.json())
+		.then((data) => {
+			// console.log("Calendar Data loaded: ", data);
+			constants = { ...constants, ...data.real, ...data.ingame, MONTHS: data.months };
+		})
+		.then(() => fetch("https://api.hypixel.net/resources/skyblock/election"))
+		.then((res) => res.json())
+		.then((data) => {
+			// console.log("Mayor Data loaded: ", data);
+			constants.mayor = data.mayor;
+		})
+		return true;
+	} catch (error) {
+		console.error("Failed to fetch data: ", error);
+		return false;
+	}
+}
 
 function calcDay() {
+	if (!constants.MONTHS) {
+    console.log("Months data not loaded");
+    // console.error("Months data is not loaded yet!");
+		console.log('Constants Data:', constants);
+    return null;
+	}
+
 	const date = Date.now() - year_0;
 
 	const yearDivider = constants.DAYS_IN_YEAR * constants.SECONDS_PER_DAY * 1000;
@@ -122,9 +135,9 @@ function calcDay() {
 	const [minute, remainer5] = [Math.floor(remainer4 / minuteDivider), remainer4 % minuteDivider];
 
 	const secondDivider = 1000;
-	const second = Math.floor(remainer5 / secondDivider);
+	const seconds = Math.floor(remainer5 / secondDivider);
 
-	return { year: year + 1, month: month + 1, day: day + 1, monthName: constants.MONTHS[month + 1], hour, minute, second };
+	return { year: year + 1, month: month + 1, day: day + 1, monthName: constants.MONTHS[month + 1], hour, minute, seconds };
 }
 
 function calcEvents({ day, month, year }) {
@@ -258,7 +271,5 @@ function formatMin(min) {
 	return string;
 }
 
-const AppContext = createContext();
-
 export default calcDay;
-export { constants, calcEvents, calcDay, calendarFetch, formatMin, AppContext };
+export { constants, calcEvents, calcDay, calendarFetch, formatMin };

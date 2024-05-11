@@ -9,43 +9,43 @@
 
 The best hypixel skyblock calendar on the web. It caters to every SINGLE event that takes place in the game. All of this plus a beautiful UI and a lot of features. This calendar even caters to mayor based events, timed events (dark auction, jerry's workshop, etc) and fixed events. Ensure that you don't miss out on any event by using this calendar. So save in your bookmark and share it with others if you have to!
 
-[CHECK OUT THE WEBSITE!!](https://fschatbot.github.io/Skyblock-Calendar/)
+[CHECK OUT THE WEBSITE!!](https://sb-calendar.com)
 
-# How to Run
+# Quickstart
 
-If you are going to be reuploading it then please give permission!
-
+If you reupload or clone, link [Skyblock-Calendar](https://github.com/fschatbot/Skyblock-Calendar) and credit **fschatbot**.
 ```
-npm clean-install
-npm run build
-serve -s build
+npm i
+npm run dev
 ```
 
-# Credits
+## Dependencies
+- [react-tooltip](http://https://www.npmjs.com/package/react-tooltip)
+- [minecraft-text](https://www.npmjs.com/package/minecraft-text)
+- [html-react-parser](https://www.npmjs.com/package/html-react-parser)
 
-## Code
-
-- https://skyblock-api.matdoes.dev/ (For Head Skins)
-- https://hypixel.inventivetalent.org/
-- https://skyblock-npcs.matdoes.dev/
-- Enis for the font: [Enis#5902](http://discordapp.com/users/999059797796204594) & [planetminecraft](https://www.planetminecraft.com/member/ensis/)
+## Resources
+- [Hypixel Tools](https://hypixel.inventivetalent.org) by [InventivetalentDev](https://github.com/InventivetalentDev)
+- SkyBlock Head՚s by [matdoes](https://skyblock.matdoes.dev)
+- Fonts by [Enis#5902](http://discordapp.com/users/999059797796204594) & [Planet Minecraft](https://www.planetminecraft.com/member/ensis/)
 
 ## Reference
-
 - [Hypixel Fandom](https://hypixel-skyblock.fandom.com/wiki/Hypixel_SkyBlock_Wiki)
 - [Hypixel Wiki](https://wiki.hypixel.net/)
-- https://ugly-guy.github.io/calendar/
+- [JaGH՚s Skyblock Calendar](https://ugly-guy.github.io/calendar/)
 
 ## TODO
-
 - [x] Add Icons
 - [x] Add screenshots as backgrounds
   - https://hypixel.net/threads/skyblock-cinematic-screenshots.3411421/
 - [x] Add a bar for the amount of day that has passed
 - [x] Add more timers
 - [x] Add tooltip on hover for time left for the day to arrive
-- [ ] Update the metadata of the index.html
+- [x] Update the metadata of the index.html
 - [x] Make the [Readme](README.md) more beautiful
+- [ ] Optimise time update calculations and rendering
+- [ ] Improve load time with smaller assets
+- [ ] Collapse and unload inactive seasons
 - [ ] Make Credit Footer
 - [ ] Mayor Based Events
   - [x] Mining Fiesta
@@ -55,7 +55,7 @@ serve -s build
 - [ ] Make events viewing toggleable
 - [ ] Add Notifications
 - [ ] Make an animated favicon (match with the skyblock time)
-- [x] Change the minecraft font to this: https://postimg.cc/RNKK57RG by Ensis#5902
+- [ ] Improve site fonts with Minecraft smooth text
 - [ ] Fetchur reset event (with request icon and count)
 - [ ] Daily Commission reset event
 - [ ] NPC daily buy reset event

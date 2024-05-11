@@ -2,8 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* You are meant to put custom classes here */
+@layer utilities {
+	.custom-scroll {
+		scrollbar-width: thin;
+		scrollbar-color: #4b5563 transparent;
+	}
+}
+
 @font-face {
-	font-family: "minecraft-font";
-	/* The OTF is smooth and the TTF is sharp edged */
-	src: url("./fonts/minecraft.otf") format("opentype"), url("./fonts/minecraft.ttf") format("truetype");
+	font-family: "mc";
+	src: url("./assets/fonts/mc.woff") format("woff");
+}
+
+@font-face {
+	font-family: "mc-smooth";
+	src: url("./assets/fonts/mc-smooth.woff") format("woff");
 }

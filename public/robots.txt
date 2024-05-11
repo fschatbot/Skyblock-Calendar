@@ -1,3 +1,5 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
+Disallow: 
+Crawl-delay: 5
 Disallow:
+Sitemap: https://sb-calendar.com/sitemap.xml

@@ -1,0 +1,52 @@
+.react-tooltip {
+	@apply z-40 max-w-xs !rounded-xl;
+}
+.react-tooltip h1 {
+	@apply font-medium text-lg;
+}
+.react-tooltip span {
+	/* @apply text-white/90; */
+}
+
+.react-tooltip label {
+	@apply block text-xs text-white/70 text-center italic;
+}
+
+/* Config Menu CSS */
+.ConfigContainer {
+	@apply fixed inset-0 z-[60] bg-white/30
+	flex justify-center items-center;
+}
+
+.ConfigMenu {
+	@apply bg-slate-800 text-white p-4 rounded-xl shadow-lg shadow-slate-800
+	w-10/12 md:w-[40rem] min-h-[30rem]
+	flex items-center flex-col;
+}
+
+.ConfigMenu h1 {
+	@apply text-3xl font-mc mb-4;
+}
+
+.ConfigMenu .Options {
+	@apply flex flex-row gap-4 flex-grow w-full;
+}
+
+.ConfigMenu .Options .Option {
+	@apply flex flex-col gap-2 w-full;
+}
+
+.ConfigMenu .Options .Option h2 {
+	@apply text-xl font-mc mx-auto mb-1;
+}
+
+.ConfigMenu .Options .Option .listItem {
+	@apply flex gap-1 flex-row items-center;
+}
+
+.closeIcon {
+	@apply w-full border mt-4 p-2 rounded-xl cursor-pointer
+	bg-white/20 border-white/20
+	hover:bg-white/30 hover:border-white/30
+	flex justify-center items-center;
+}
