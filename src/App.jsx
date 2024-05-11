@@ -1,24 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo, useContext, createContext } from "react";
-import "./assets/styles/App.css";
-import "./assets/styles/calendar.css";
 import "./assets/styles/event.css";
 import "./assets/styles/mcStyle.css";
 import { Tooltip } from "react-tooltip";
-import { constants, calcDay, calcEvents, calendarFetch, formatMin, AppContext } from "./assets/utils";
+import { constants, calcDay, calcEvents, calendarFetch, formatMin } from "./assets/utils";
 import { render } from "minecraft-text";
 import parse from "html-react-parser";
 
-// Importing all the background images
-import image1 from "./assets/backgrounds/bg1.png";
-import image2 from "./assets/backgrounds/bg2.png";
-import image3 from "./assets/backgrounds/bg3.png";
-import image4 from "./assets/backgrounds/bg4.png";
-import image5 from "./assets/backgrounds/bg5.png";
-import image6 from "./assets/backgrounds/bg6.png";
-import image7 from "./assets/backgrounds/bg7.png";
-import image8 from "./assets/backgrounds/bg8.png";
-
-const images = [image1, image2, image3, image4, image5, image6, image7, image8];
+import Clock from './components/Clock';
 
 const MyContext = createContext();
 
@@ -39,7 +27,7 @@ function App() {
 	const [config, setConfig] = useState(() => {
 		return localStorage.getItem("displayConfig") ? JSON.parse(localStorage.getItem("displayConfig")) : constants.eventConfig;
 	});
-	const [randomImage] = useState(() => Math.floor(Math.random() * images.length));
+	const [randomImage] = useState("bg-mc-" + (Math.floor(Math.random() * 8) + 1));
 
 	const handleMouseOverDay = useCallback((day, month, year) => {
 		// Calculating the Date instance when the day started
@@ -106,15 +94,6 @@ function App() {
 		fetchData();
 	}, []);
 
-	useEffect(() => {
-		const interval = setInterval(() => {
-			const { seconds, minute, hour } = calcDay();
-			setSbClock({ seconds, minute, hour });
-		}, 1000);
-
-		return () => clearInterval(interval);
-	}, []);
-
 	useEffect(() => { // Can not reference sbDay directly in useEffect as it will not update the value because of JS closure.
 		let lastSbDay = sbDay;
 
@@ -134,12 +113,13 @@ function App() {
 	}
 
 	return (
-		<div style={{ backgroundImage: `url(${images[randomImage]})` }} className="bg-cover bg-no-repeat bg-fixed pt-[140px] bg-center">
+		<div className={`${randomImage} bg-cover bg-no-repeat bg-fixed bg-center`}>
 			<MyContext.Provider value={contextValue}>
 				{configActive && <ConfigMenu />}
 				<ActionBar />
-				<h1 className="fixed z-50 left-1/2 -translate-x-1/2 top-5 rounded-xl overflow-hidden flex flex-col">
-					<span className="py-4 px-8 bg-rose-500/80 backdrop-blur-sm text-sm sm:text-lg md:text-2xl text-white text-center font-minecraft">Time: {`${sbClock.hour.toString().padStart(2, '0')}:${sbClock.minute.toString().padStart(2, '0')}${sbClock.hour >= 12 ? 'pm' : 'am'}`} {`${sbDay}/${sbMonth}/${sbYear} ${sbMonthName.replace("_", " ")?.title()}`}</span>
+				{/* sticky */}
+				<div className="sticky top-0 z-10 py-10 mx-auto w-4/5 max-w-lg overflow-hidden flex flex-col">
+					<span className="py-4 px-8 bg-rose-500/80 text-sm sm:text-lg md:text-2xl text-white text-center rounded-t-xl">Time: <Clock /> {`${sbDay}/${sbMonth}/${sbYear} ${sbMonthName.replace("_", " ")?.title()}`}</span>
 					<div className="gap-1 flex flex-row items-center justify-center w-full bg-white/80 px-2 py-1 rounded-b-xl">
 						{calcEvents({ day: sbDay - 1, month: sbMonth - 1, year: sbYear }).map((event) => (
 							<div className="px-4 py-[2px] rounded-3xl bg-blue-600/80 text-white font-medium text-center text-sm sm:text-base" key={event.key}>
@@ -147,12 +127,8 @@ function App() {
 							</div>
 						))}
 					</div>
-				</h1>
+				</div>
 				<MonthsDisplay />
-				<span className="text-white flex justify-center items-center flex-row gap-1 mt-5 text-lg">
-					Made by
-					<a className="font-bold underline" href="https://github.com/fschatbot">FSChatBot</a>
-				</span>
 				<Tooltip anchorSelect=".day-anchor-element">
 					{tooltipMessage[0]}
 					<label>{tooltipMessage[1] ? tooltipMessage[1] : ''}</label>
@@ -185,8 +161,8 @@ function Month({ month }) {
 	const monthName = useMemo(() => constants.MONTHS[month + 1].replace("_", " ").title(), [month]);
 
 	return (
-		<div className="month">
-			<h1>{monthName}</h1>
+		<div className="w-full flex justify-center items-center flex-col px-4 pb-14">
+			<h1 className="px-8 py-4 mb-14 bg-gray-600/90 rounded-xl text-2xl sm:text-4xl font-medium text-white font-mc">{monthName}</h1>
 			<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 gap-4">
 				{days.map((day) => (
 					<Day key={day} day={day} month={month} />
@@ -209,26 +185,23 @@ const Day = React.memo(({ day, month }) => {
 	const events = calcEvents({ day, month, year });
 	const empty = events.length === 0 ? " empty" : "";
 
-  let activeWidth = 0;
+	const [activeWidthState, setActiveWidthState] = useState(0);
 
-  if (isActive) {
-    const [activeWidthState, setActiveWidthState] = useState(0);
-    activeWidth = activeWidthState;
-
-    useEffect(() => {
+	useEffect(() => {
+    if (isActive) {
       const interval = setInterval(() => {
         const { hour, minute } = calcDay();
-        setActiveWidthState((hour * 60 + minute) / (60 * 24));
+        setActiveWidthState((hour + minute / 60) / 24);
       }, 1000);
 
       return () => clearInterval(interval);
-    }, []);
-  }
+    }
+  }, [isActive]);
 
 	return (
 		<div onMouseOver={()=>{handleMouseOverDay(day, month, sbYear)}} className="day-anchor-element aw-44 h-44 md:w-52 md:h-52 shadow-lg rounded-md overflow-hidden backdrop-blur-sm bg-white/20 flex flex-col relative">
 			<h1 data-active={`${isActive ? 'true' : 'false'}`} className={`${isActive ? "bg-emerald-500" : "bg-blue-500"} relative text-white text-center font-bold py-2`}>
-				{isActive ? <span style={{ right: `${(1-activeWidth)*100}%` }} className="absolute bg-black opacity-20 transition-[right] duration-1000 inset-0"></span> : null}
+				{isActive ? <span style={{ right: `${(1-activeWidthState)*100}%` }} className="absolute bg-black opacity-20 transition-[right] duration-1000 inset-0"></span> : null}
 				{day + 1}
 				{(day + 1).rank()}
 			</h1>

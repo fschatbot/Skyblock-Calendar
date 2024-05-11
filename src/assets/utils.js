@@ -1,5 +1,3 @@
-import { createContext } from "react";
-
 const year_0 = new Date("Jun 11 2019 17:55:00 GMT").getTime() || 1.5602757e12;
 
 let constants = {
@@ -273,7 +271,5 @@ function formatMin(min) {
 	return string;
 }
 
-const AppContext = createContext();
-
 export default calcDay;
-export { constants, calcEvents, calcDay, calendarFetch, formatMin, AppContext };
+export { constants, calcEvents, calcDay, calendarFetch, formatMin };

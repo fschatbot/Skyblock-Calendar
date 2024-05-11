@@ -8,14 +8,14 @@ export default {
 		extend: {
 			// Custom background are meant to go here
 			backgroundImage: {
-				'img-1': "url('/backgrounds/bg1.png')",
-				'img-2': "url('/backgrounds/bg2.png')",
-				'img-3': "url('/backgrounds/bg3.png')",
-				'img-4': "url('/backgrounds/bg4.png')",
-				'img-5': "url('/backgrounds/bg5.png')",
-				'img-6': "url('/backgrounds/bg6.png')",
-				'img-7': "url('/backgrounds/bg7.png')",
-				'img-8': "url('/backgrounds/bg8.png')",
+				'mc-1': "url('/backgrounds/bg1.png')",
+				'mc-2': "url('/backgrounds/bg2.png')",
+				'mc-3': "url('/backgrounds/bg3.png')",
+				'mc-4': "url('/backgrounds/bg4.png')",
+				'mc-5': "url('/backgrounds/bg5.png')",
+				'mc-6': "url('/backgrounds/bg6.png')",
+				'mc-7': "url('/backgrounds/bg7.png')",
+				'mc-8': "url('/backgrounds/bg8.png')",
       },
 			fontFamily: {
 				'sans': ['mc', 'Arial', 'sans-serif'],
@@ -24,5 +24,10 @@ export default {
 			},
 		},
 	},
+	safelist: [
+    {
+      pattern: /bg-mc-(1|2|3|4|5|6|7|8)/,
+    },
+  ],
 	plugins: [],
 };
