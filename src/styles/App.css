@@ -5,6 +5,7 @@
 
 .Nav {
 	@apply fixed z-50 left-1/2 -translate-x-1/2 top-5
+	max-w-2xl
 	rounded-xl overflow-hidden
 	flex flex-col;
 }
@@ -16,12 +17,17 @@
 
 .currEvents {
 	@apply gap-1 flex flex-row items-center justify-center w-full
-	bg-white/80 px-2 py-1 rounded-b-xl;
+	bg-white/80 px-2 py-1 rounded-b-xl
+	text-nowrap overflow-x-auto;
+
+	/* Firefox */
+	/* scrollbar-width: thin; */
+	/* scrollbar-color: #4b5563 transparent; */
 }
 
 .chip {
 	@apply px-4 py-[2px] rounded-3xl bg-blue-600/80 text-white font-medium
-	text-center
+	text-center inline-block
 	text-sm sm:text-base;
 }
 
@@ -47,7 +53,7 @@
 }
 
 .react-tooltip {
-	@apply z-40 max-w-xs !rounded-xl;
+	@apply z-40 max-w-xs !rounded-lg;
 }
 .react-tooltip h1 {
 	@apply font-medium text-lg;
@@ -111,4 +117,18 @@
 
 .credits a {
 	@apply font-bold underline;
+}
+
+.currEvents::-webkit-scrollbar {
+	height: 5px;
+	width: 5px;
+}
+*::-webkit-scrollbar-track {
+	border-radius: 20px;
+	background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+	border-radius: 20px;
+	background-color: #4b5563;
 }

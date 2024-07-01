@@ -11,30 +11,32 @@ The best hypixel skyblock calendar on the web. It caters to every SINGLE event t
 
 [CHECK OUT THE WEBSITE!!](https://fschatbot.github.io/Skyblock-Calendar/)
 
-# How to Run
+# Quickstart
 
-If you are going to be reuploading it then please give permission!
+If you reupload or clone, link [Skyblock-Calendar](https://github.com/fschatbot/Skyblock-Calendar) and credit **fschatbot**.
 
 ```
-npm clean-install
-npm run build
-serve -s build
+npm i
+npm run dev
 ```
 
-# Credits
+## Dependencies
 
-## Code
+- [react-tooltip](http://https://www.npmjs.com/package/react-tooltip)
+- [minecraft-text](https://www.npmjs.com/package/minecraft-text)
+- [html-react-parser](https://www.npmjs.com/package/html-react-parser)
 
-- https://skyblock-api.matdoes.dev/ (For Head Skins)
-- https://hypixel.inventivetalent.org/
-- https://skyblock-npcs.matdoes.dev/
-- Enis for the font: [Enis#5902](http://discordapp.com/users/999059797796204594) & [planetminecraft](https://www.planetminecraft.com/member/ensis/)
+## Resources
+
+- [Hypixel Tools](https://hypixel.inventivetalent.org) by [InventivetalentDev](https://github.com/InventivetalentDev)
+- SkyBlock Election & Heads [matdoes](https://skyblock.matdoes.dev)
+- Fonts by [Enis#5902](http://discordapp.com/users/999059797796204594) & [Planet Minecraft](https://www.planetminecraft.com/member/ensis/)
 
 ## Reference
 
 - [Hypixel Fandom](https://hypixel-skyblock.fandom.com/wiki/Hypixel_SkyBlock_Wiki)
 - [Hypixel Wiki](https://wiki.hypixel.net/)
-- https://ugly-guy.github.io/calendar/
+- [JaGH՚s Skyblock Calendar](https://ugly-guy.github.io/calendar/)
 
 ## TODO
 

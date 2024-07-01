@@ -52,7 +52,7 @@ function App() {
 
 		const interval = setInterval(() => {
 			setSkyDate(calcDay());
-		}, 100);
+		}, 1000);
 		return () => clearInterval(interval);
 	}, []);
 
@@ -139,7 +139,7 @@ function Day({ day, month, year }) {
 			let interval = setInterval(() => {
 				const { hour, minute } = calcDay();
 				setWidth((hour * 60 + minute) / (60 * 24));
-			}, 100);
+			}, 1000);
 			return () => clearInterval(interval);
 		}
 	}, [isActive, activeDayRef]);
@@ -214,7 +214,7 @@ function DisplayMayor() {
 			<div className="mayorDisplay actionItem">
 				<img src={`https://mc-heads.net/avatar/${MayorSkins[constants.mayor.name]}`} alt={constants.mayor.name} />
 			</div>
-			<Tooltip anchorSelect=".mayorDisplay" place="top" className="mayorToolTip">
+			<Tooltip anchorSelect=".mayorDisplay" className="mayorToolTip">
 				{constants.mayor.perks.map((perk) => {
 					return (
 						<div key={perk.name}>

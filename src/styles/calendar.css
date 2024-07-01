@@ -8,6 +8,10 @@
 
 .month > h1 {
 	@apply text-4xl mb-5 font-medium text-white font-minecraft;
+	@apply px-6 py-4 min-w-52 text-center;
+
+	/* From https://css.glass */
+	@apply bg-blue-500/40 border-blue-500/30 rounded-xl shadow-lg backdrop-blur-[8px] border;
 }
 
 .days {
