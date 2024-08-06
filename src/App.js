@@ -158,11 +158,12 @@ function Day({ day, month, year }) {
 		return `Day starts in: ${formatMin(Math.floor(diffMin))}<label>${DateFormatter.format(dayDate)}</label>`;
 	}
 
+	const monthName = constants.MONTHS[month + 1].replace("_", " ").title();
+
 	return (
 		<div className={"day" + (isActive ? " active" : "")} style={{ "--width": `${width * 100}%` }} {...props} data-tooltip-html={ToolTip} onMouseOver={() => setToolTip(calcDistance())}>
 			<h1>
-				{day + 1}
-				{(day + 1).rank()}
+				{`${monthName} ${day + 1}${(day + 1).rank()}`}
 			</h1>
 			<div className={"events" + empty}>
 				{events.length === 0 && <h2>No Events</h2>}
@@ -193,7 +194,7 @@ function JumpDay() {
 				</svg>
 			</div>
 			<Tooltip anchorSelect=".jumpDay" className="jumpDayTip">
-				<div>Jump to active day</div>
+				<div>Jump to today</div>
 			</Tooltip>
 		</>
 	);
