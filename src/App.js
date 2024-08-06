@@ -10,14 +10,14 @@ import { render } from "minecraft-text";
 import parse from "html-react-parser";
 
 // Importing all the background images
-import image1 from "./backgrounds/bg1.png";
-import image2 from "./backgrounds/bg2.png";
-import image3 from "./backgrounds/bg3.png";
-import image4 from "./backgrounds/bg4.png";
-import image5 from "./backgrounds/bg5.png";
-import image6 from "./backgrounds/bg6.png";
-import image7 from "./backgrounds/bg7.png";
-import image8 from "./backgrounds/bg8.png";
+import image1 from "./backgrounds/bg1.webp";
+import image2 from "./backgrounds/bg2.webp";
+import image3 from "./backgrounds/bg3.webp";
+import image4 from "./backgrounds/bg4.webp";
+import image5 from "./backgrounds/bg5.webp";
+import image6 from "./backgrounds/bg6.webp";
+import image7 from "./backgrounds/bg7.webp";
+import image8 from "./backgrounds/bg8.webp";
 
 const images = [image1, image2, image3, image4, image5, image6, image7, image8];
 
@@ -182,15 +182,20 @@ function JumpDay() {
 	const { currDay } = useContext(AppContext);
 
 	return (
-		<div className="jumpDay actionItem" onClick={() => currDay.current?.scrollIntoView({ behavior: "smooth", block: "center" })}>
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
-				<path
-					strokeLinecap="round"
-					strokeLinejoin="round"
-					d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
-				/>
-			</svg>
-		</div>
+		<>
+			<div className="jumpDay actionItem" onClick={() => currDay.current?.scrollIntoView({ behavior: "smooth", block: "center" })}>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+					<path
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+					/>
+				</svg>
+			</div>
+			<Tooltip anchorSelect=".jumpDay" className="jumpDayTip">
+				<div>Jump to active day</div>
+			</Tooltip>
+		</>
 	);
 }
 
