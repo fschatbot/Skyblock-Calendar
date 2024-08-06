@@ -1,5 +1,5 @@
 .day .events {
-	@apply flex items-center flex-grow flex-col gap-2 p-1 overflow-y-auto;
+	@apply flex items-center flex-grow flex-col gap-1 p-1 overflow-y-auto;
 	/* Firefox */
 	scrollbar-width: thin;
 	scrollbar-color: #4b5563 transparent;
@@ -7,7 +7,7 @@
 
 .events:not(.empty) h2 {
 	@apply w-full bg-slate-500 rounded-sm px-1 font-medium text-white
-	flex flex-row gap-1;
+	flex flex-row gap-1 bg-opacity-50;
 }
 .special_mayor {
 	@apply !bg-purple-600;

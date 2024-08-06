@@ -60,8 +60,11 @@ let constants = {
 			key: "mining_fiesta",
 			name: "Mining Fiesta",
 			when: [
-				{ start: { month: 4, day: 1 }, end: { month: 4, day: 16 } },
-				{ start: { month: 7, day: 1 }, end: { month: 7, day: 16 } },
+				{ start: { month: 5, day: 1 }, end: { month: 5, day: 8 } },
+				{ start: { month: 6, day: 1 }, end: { month: 6, day: 8 } },
+				{ start: { month: 7, day: 1 }, end: { month: 7, day: 8 } },
+				{ start: { month: 8, day: 1 }, end: { month: 8, day: 8 } },
+				{ start: { month: 9, day: 1 }, end: { month: 9, day: 8 } },
 			],
 			mayor: "Cole",
 			icon: "https://assets.mcasset.cloud/1.19.3/assets/minecraft/textures/item/iron_pickaxe.png",
