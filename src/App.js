@@ -67,7 +67,7 @@ function App() {
 			Array(constants.MONTHS_IN_YEAR)
 				.fill(0)
 				.map((_, i) => <Month month={i} year={year} key={i} />),
-		[month, day, year] // eslint-disable-line
+		[month, day, year], // eslint-disable-line
 	);
 	const actionBarMemo = useMemo(() => <ActionBar />, []);
 	const ConfigMenuMemo = useMemo(() => <ConfigMenu />, []);
@@ -158,13 +158,9 @@ function Day({ day, month, year }) {
 		return `Day starts in: ${formatMin(Math.floor(diffMin))}<label>${DateFormatter.format(dayDate)}</label>`;
 	}
 
-	const monthName = constants.MONTHS[month + 1].replace("_", " ").title();
-
 	return (
 		<div className={"day" + (isActive ? " active" : "")} style={{ "--width": `${width * 100}%` }} {...props} data-tooltip-html={ToolTip} onMouseOver={() => setToolTip(calcDistance())}>
-			<h1>
-				{`${monthName} ${day + 1}${(day + 1).rank()}`}
-			</h1>
+			<h1>{`${day + 1}${(day + 1).rank()}`}</h1>
 			<div className={"events" + empty}>
 				{events.length === 0 && <h2>No Events</h2>}
 				{events.length !== 0 &&
@@ -280,7 +276,7 @@ function ConfigMenu() {
 				{constants.events.map((event) => (
 					<Item key={event.name} name={event.name} icon={event.icon} enabled={config[event.name] ?? true} />
 				))}
-				<Item name="Dwarven Kings" icon="https://wiki.hypixel.net/images/c/c0/SkyBlock_sprite_npcs_dwarf_royalguard_female_6.png"/>
+				<Item name="Dwarven Kings" icon="https://static.wikia.nocookie.net/hypixelhousing/images/2/23/NPC_Pack.Dwarf_Royalguard_Female_6.png" />
 				<Item name="Dark Auction" icon="https://mc-heads.net/head/7ab83858ebc8ee85c3e54ab13aabfcc1ef2ad446d6a900e471c3f33b78906a5b" />
 				<Item name="Jacob's Event" icon="https://static.wikia.nocookie.net/hypixel-skyblock/images/5/5c/Enchanted_Wheat.png" />
 				<Item name="Bingo Event" icon="https://mc-heads.net/head/d4cd9c707c7092d4759fe2b2b6a713215b6e39919ec4e7afb1ae2b6f8576674c" />
