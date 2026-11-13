@@ -87,16 +87,38 @@ let constants = {
 		Emmor: "a3c31bd60441020af2b1939bba49a96d47880b059db0e20d5d42cfaa41a1618b",
 		Grandan: "1d1f4161af6d4fdfbac17adcf9d0b6f1ffb517e7b936aad9c37b747ce64ec4c6",
 	},
+	MONTHS: {
+		1: "early_spring",
+		2: "spring",
+		3: "late_spring",
+		4: "early_summer",
+		5: "summer",
+		6: "late_summer",
+		7: "early_autumn",
+		8: "autumn",
+		9: "late_autumn",
+		10: "early_winter",
+		11: "winter",
+		12: "late_winter",
+	},
 	year_0,
+	// Ingame
+	DAYS_IN_MONTH: 31,
+	MONTHS_IN_YEAR: 12,
+	DAYS_IN_YEAR: 372,
+	// IRL Conversions
+	MINUTES_PER_DAY: 20, // 20 minutes in a day
+	SECONDS_PER_DAY: 1200, // 20 * 60 seconds in a day
+	SECONDS_PER_MINUTE: 5 / 6, // 1200 / (60*24) seconds in a minute
+	SECONDS_PER_TEN_MINUTES: 50 / 6,
+	SECONDS_PER_HOUR: 50,
+	MINUTES_PER_MONTH: 620,
+	SECONDS_PER_MONTH: 37200,
+
 	eventConfig: localStorage.getItem("displayConfig") ? JSON.parse(localStorage.getItem("displayConfig")) : {},
 };
 
-const calendarFetch = fetch("https://hypixel-api.inventivetalent.org/api/skyblock/calendar")
-	.then((res) => res.json())
-	.then((data) => {
-		constants = { ...constants, ...data.real, ...data.ingame, MONTHS: data.months };
-	})
-	.then(() => fetch("https://api.hypixel.net/resources/skyblock/election"))
+const calendarFetch = fetch("https://api.hypixel.net/resources/skyblock/election")
 	.then((res) => res.json())
 	.then((data) => {
 		constants.mayor = data.mayor;
