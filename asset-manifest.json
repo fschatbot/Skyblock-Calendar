@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/Skyblock-Calendar/static/css/main.d0d4cfcf.css",
+    "main.js": "/Skyblock-Calendar/static/js/main.58607a44.js",
+    "static/media/bg6.webp": "/Skyblock-Calendar/static/media/bg6.7b2d0ee97266a701cd5e.webp",
+    "static/media/bg3.webp": "/Skyblock-Calendar/static/media/bg3.3d1f8ba8720dee472f57.webp",
+    "static/media/bg7.webp": "/Skyblock-Calendar/static/media/bg7.756ff9860730eac00a57.webp",
+    "static/media/bg2.webp": "/Skyblock-Calendar/static/media/bg2.b7f0f5514f682315d46f.webp",
+    "static/media/bg4.webp": "/Skyblock-Calendar/static/media/bg4.3a7760398ac76893dbcb.webp",
+    "static/media/bg1.webp": "/Skyblock-Calendar/static/media/bg1.2970c7f0a1fabf149303.webp",
+    "static/media/bg8.webp": "/Skyblock-Calendar/static/media/bg8.c3666dfa2b897d9c6bc9.webp",
+    "static/media/bg5.webp": "/Skyblock-Calendar/static/media/bg5.26924c20183255894699.webp",
+    "static/media/minecraft.otf": "/Skyblock-Calendar/static/media/minecraft.f8551166b22890fdf234.otf",
+    "static/media/minecraft.ttf": "/Skyblock-Calendar/static/media/minecraft.c6eda61c269ecc525ed3.ttf",
+    "index.html": "/Skyblock-Calendar/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.d0d4cfcf.css",
+    "static/js/main.58607a44.js"
+  ]
+}
