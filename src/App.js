@@ -10,14 +10,14 @@ import { render } from "minecraft-text";
 import parse from "html-react-parser";
 
 // Importing all the background images
-import image1 from "./backgrounds/bg1.png";
-import image2 from "./backgrounds/bg2.png";
-import image3 from "./backgrounds/bg3.png";
-import image4 from "./backgrounds/bg4.png";
-import image5 from "./backgrounds/bg5.png";
-import image6 from "./backgrounds/bg6.png";
-import image7 from "./backgrounds/bg7.png";
-import image8 from "./backgrounds/bg8.png";
+import image1 from "./backgrounds/bg1.webp";
+import image2 from "./backgrounds/bg2.webp";
+import image3 from "./backgrounds/bg3.webp";
+import image4 from "./backgrounds/bg4.webp";
+import image5 from "./backgrounds/bg5.webp";
+import image6 from "./backgrounds/bg6.webp";
+import image7 from "./backgrounds/bg7.webp";
+import image8 from "./backgrounds/bg8.webp";
 
 const images = [image1, image2, image3, image4, image5, image6, image7, image8];
 
@@ -158,11 +158,12 @@ function Day({ day, month, year }) {
 		return `Day starts in: ${formatMin(Math.floor(diffMin))}<label>${DateFormatter.format(dayDate)}</label>`;
 	}
 
+	const monthName = constants.MONTHS[month + 1].replace("_", " ").title();
+
 	return (
 		<div className={"day" + (isActive ? " active" : "")} style={{ "--width": `${width * 100}%` }} {...props} data-tooltip-html={ToolTip} onMouseOver={() => setToolTip(calcDistance())}>
 			<h1>
-				{day + 1}
-				{(day + 1).rank()}
+				{`${monthName} ${day + 1}${(day + 1).rank()}`}
 			</h1>
 			<div className={"events" + empty}>
 				{events.length === 0 && <h2>No Events</h2>}
@@ -182,15 +183,20 @@ function JumpDay() {
 	const { currDay } = useContext(AppContext);
 
 	return (
-		<div className="jumpDay actionItem" onClick={() => currDay.current?.scrollIntoView({ behavior: "smooth", block: "center" })}>
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
-				<path
-					strokeLinecap="round"
-					strokeLinejoin="round"
-					d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
-				/>
-			</svg>
-		</div>
+		<>
+			<div className="jumpDay actionItem" onClick={() => currDay.current?.scrollIntoView({ behavior: "smooth", block: "center" })}>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+					<path
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+					/>
+				</svg>
+			</div>
+			<Tooltip anchorSelect=".jumpDay" className="jumpDayTip">
+				<div>Jump to today</div>
+			</Tooltip>
+		</>
 	);
 }
 
@@ -274,7 +280,7 @@ function ConfigMenu() {
 				{constants.events.map((event) => (
 					<Item key={event.name} name={event.name} icon={event.icon} enabled={config[event.name] ?? true} />
 				))}
-				<Item name="Dwarven Kings" />
+				<Item name="Dwarven Kings" icon="https://wiki.hypixel.net/images/c/c0/SkyBlock_sprite_npcs_dwarf_royalguard_female_6.png"/>
 				<Item name="Dark Auction" icon="https://mc-heads.net/head/7ab83858ebc8ee85c3e54ab13aabfcc1ef2ad446d6a900e471c3f33b78906a5b" />
 				<Item name="Jacob's Event" icon="https://static.wikia.nocookie.net/hypixel-skyblock/images/5/5c/Enchanted_Wheat.png" />
 				<Item name="Bingo Event" icon="https://mc-heads.net/head/d4cd9c707c7092d4759fe2b2b6a713215b6e39919ec4e7afb1ae2b6f8576674c" />
